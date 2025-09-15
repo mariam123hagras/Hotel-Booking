@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import { messageInRaw, Webhook } from "svix";
 
+
 const clerkWebhooks=async(req , res)=>{
 
     try{
@@ -21,16 +22,20 @@ const clerkWebhooks=async(req , res)=>{
 
         const userData={
             _id:data.id,
-            email:data.email_addresses[0].email_addresses,
+           email: data.email_addresses[0].email_address,
+
             username:data.first_name +"" + data.last_name,
            image:data.image_url, 
 
         }
 
+        console.log("Webhook received", req.body, req.headers);
+
         //Switch Case for different Events
 switch(type){
     case "user.created" :{
         await User.create(userData)
+        console.log("User Created")
          break;
     }
 
@@ -46,10 +51,12 @@ switch(type){
         default:
             break;
 }
+
 res.json({success:true,message:'Webhook Recived'})
 
     }
     catch(error){
+         console.error("Webhook error:", error);
         console.log(error.message)
         res.json({success:false,message:error.message})
     }

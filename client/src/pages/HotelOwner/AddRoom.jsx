@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 import Title from '../../components/Title'
 import {assets} from '../../assets/assets'
+import { useAppContext } from '../../context/appContext'
+import {toast} from 'react-hot-toast'
+
 
 const AddRoom = () => {
+
+const {axios,getToken}= useAppContext()
 
   const [images,setImages]=useState({
     1:null,
@@ -23,9 +28,68 @@ const AddRoom = () => {
     }
   })
 
+  const[loading,setLoading]=useState(false)
+
+
+const onSubmitHandler=async(e)=>{
+  e.preventDefault()
+// Check if all inputs are filled
+if(!inputs.roomType || !inputs.pricePerNight || !inputs.amenities||! Object.values(images).some(img=>img)){
+toast.error('Please fill all the fields and upload at least one image')
+return;
+
+}
+setLoading(true)
+try {
+  const formData=new FormData()
+  formData.append('roomType',inputs.roomType)
+  formData.append('pricePerNight',inputs.pricePerNight)
+  // Converting Amenities to Array & keep only enabled amenities
+  const amenities=Object.keys(inputs.amenities).filter(amenity=>inputs.amenities[amenity])
+  formData.append('amenities',JSON.stringify(amenities))
+   // Adding Images to formData
+  Object.keys(images).forEach(key=>{
+    if(images[key]){
+      formData.append('images',images[key])
+    }
+  })
+  const {data}=await axios.post('/api/rooms', formData, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
+  if(data.success){
+    toast.success(data.message)
+    setInputs({
+      roomType:'',
+      pricePerNight:0,
+      amenities:{
+        'Free Wifi':false,
+        'Free Breakfast':false, 
+        'Room Service':false,
+        'Mountain View':false,
+        'Pool Access':false,
+      }
+    })
+    setImages({
+      1:null,
+      2:null,
+      3:null,
+      4:null,
+    })
+  }
+  else{
+    toast.error(data.message)
+  }
+} catch (error) {
+      toast.error(error.message)
+}
+finally{
+setLoading(false)
+} 
 
   return (
-  <form>
+  <form onSubmit={onSubmitHandler}> 
     <Title align='left' font='outfit' title='Add Room' subTitle='Fill in the details carefully and accurate roo details,pricing,and amenities,to enhance the user booking experience' />
 {/* Upload Area For Images  */}
 <p className='text-gray-800 mt-10'>Images</p>
@@ -81,11 +145,11 @@ const AddRoom = () => {
   ))}
 
 </div>
-<button className='bg-primary text-white px-8 py-2 rounded mt-8 cursor-pointer'>
-  Add Room
+<button className='bg-primary text-white px-8 py-2 rounded mt-8 cursor-pointer' disabled={loading}>
+ {loading ? 'Adding...':'Add Room'}
 </button>
   </form>
   )
-}
+}}
 
 export default AddRoom

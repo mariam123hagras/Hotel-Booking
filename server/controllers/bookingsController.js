@@ -5,6 +5,7 @@ import Room from "../models/Room.js";
 
 import Bookings from "../models/Bookings.js";
 import Hotel from "../models/Hotel.js";
+import transporter from "../configs/nodemailer.js";
 
 const checkAvailability= async({checkInDate,checkOutDate,room})=>{
     try {
@@ -70,6 +71,30 @@ export const createBooking= async(req,res)=>{
             totalPrice,
           })
 
+  const mailOptions= {
+    from: process.env.SENDER_EMAIL, // sender address,
+    to:req.user.email,
+    subject: "Hotel Booking Details",
+    html: `
+    <h2>Your Booking Details</h2>
+    <p>Dear ${req.user.username},
+    </p>
+    <p>Thank you for booking with us! Here are your booking details:</p>
+    <ul>
+        <li><strong>Booking ID:</strong> ${booking._id}</li>   
+        <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>   
+        <li><strong>Location:</strong> ${roomData.hotel.address}</li>   
+        <li><strong>Date:</strong> ${booking.checkInDate.toDateString()}</li>   
+        <li><strong>Booking Amount:</strong> ${process.env.CURRENCY||'$'} ${booking.totalPrice} /night</li>   
+    
+</ul>
+<p> We look forward to welcoming you!</p>
+<P>If you need to make any changes, feel free to contact us</p>
+
+    `// HTML body
+  }       
+await transporter.sendMail(mailOptions);
+
 res.json({success:true,message:"Booking created successfully"})
 
     } catch (error) {
@@ -94,7 +119,7 @@ export const getUserBookings= async(req,res)=>{
 
 export const getHotelBookings= async(req,res)=>{
    try {
-     const hotel = await Hotel.findOne({owner:req.auth.userId})
+     const hotel = await Hotel.findOne({owner:req.auth(c).userId})
     if(!hotel){
         return res.json({success:false,message:"No Hotel found"})
     }

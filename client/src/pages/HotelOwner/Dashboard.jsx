@@ -4,6 +4,7 @@ import { assets } from '../../assets/assets'
 import { useAppContext } from '../../context/appContext'
 import { useEffect } from 'react'
 
+
 const Dashboard = () => {
 
   const {currency,user,getToken,toast,axios}=useAppContext()
@@ -16,16 +17,20 @@ const Dashboard = () => {
     try {
       const {data}=await axios.get('/api/bookings/hotel',{
         headers:{
-          Authorization:`Bearer ${getToken()}`
+          Authorization:`Bearer ${ await getToken()}`
         } })
+        console.log("API Response:", data); // Check the response
+       
+        
         if(data?.success){
           setDashboardData(data.dashboardData)
+          console.log(data.dashboardData)
         }
         else{
           toast.error(data.message)
         }
     } catch (error) {
-      toast.error(error.message)
+      toast.error("Failed to fetch dashboard data")
     }
 
   }

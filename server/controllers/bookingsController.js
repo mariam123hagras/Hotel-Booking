@@ -107,34 +107,74 @@ res.json({success:true,message:"Booking created successfully"})
 //API to get all bookings for a user
 //GET /api/bookings/user
 
-export const getUserBookings= async(req,res)=>{
-    try {
-       const user=req.user._id;
-       const bookings= await Bookings.find({user}).populate("room hotel").sort({createdAt:-1})
-       res.json({success:true,bookings}) 
-    } catch (error) {
-           res.json({success:false,message:'Failed to fetch bookings'})
-    }
-}
 
-export const getHotelBookings= async(req,res)=>{
-   try {
-     const hotel = await Hotel.findOne({owner:req.auth(c).userId})
-    if(!hotel){
-        return res.json({success:false,message:"No Hotel found"})
-    }
-    const bookings=await Bookings.find({hotel:hotel._id}).populate("room hotel user").sort({createdAt:-1});
-      // Total Bookings
-      const totalBookings=bookings.length;
-      // Total Revenue
-      const totalRevenue = bookings.reduce((acc,booking)=>acc+booking.totalPrice,0)
 
-      res.json({success:true,dashboardData:{totalBookings,totalRevenue,bookings}})
-   } catch (error) {
-     res.json({success:false,message:'Failed to fetch bookings'})
-   }
-
+export const getUserBookings = async (req, res) => {
+  try {
+    console.log("req.user:", req.user);
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
     }
+
+    const bookings = await Bookings.find({ user: req.user.userId })
+      .populate("room")
+      .populate("hotel")
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, bookings });
+  } catch (error) {
+    console.error("getUserBookings error:", error);
+    res.status(500).json({ success: false, message: error.message || "Failed to fetch bookings" });
+  }
+};
+
+
+export const getHotelBookings = async (req, res) => {
+  try {
+    console.log("User in getHotelBookings:", req.user);
+    
+    // Find hotel by owner ID (using req.user._id from your protect middleware)
+    const hotel = await Hotel.findOne({ owner: req.user._id });
+    
+    if (!hotel) {
+      return res.json({ success: false, message: "No Hotel found for this user" });
+    }
+    
+    console.log("Found hotel:", hotel);
+    
+    // Find bookings for this hotel
+    const bookings = await Bookings.find({ hotel: hotel._id })
+      .populate("room")
+      .populate("hotel")
+      .populate("user", "username email")
+      .sort({ createdAt: -1 });
+    
+    console.log("Found bookings:", bookings.length);
+    
+    // Total Bookings
+    const totalBookings = bookings.length;
+    
+    // Total Revenue (only from paid bookings)
+    const totalRevenue = bookings
+      .filter(booking => booking.isPaid)
+      .reduce((acc, booking) => acc + booking.totalPrice, 0);
+
+    res.json({
+      success: true,
+      dashboardData: {
+        totalBookings,
+        totalRevenue,
+        bookings
+      }
+    });
+  } catch (error) {
+    console.error("getHotelBookings error:", error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch bookings: ' + error.message
+    });
+  }
+};
 
    
 

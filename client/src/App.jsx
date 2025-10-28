@@ -13,6 +13,7 @@ import Dashboard from './pages/HotelOwner/Dashboard';
 import ListRoom from './pages/HotelOwner/ListRoom';
 import {Toaster} from 'react-hot-toast'
 import { useAppContext } from './context/AppContext';
+import TokenLogger from './components/TokenLogger';
 const App = () => {
 
   const isOwnerPath = useLocation().pathname.includes("owner");
@@ -23,6 +24,7 @@ const App = () => {
       <Toaster />
       {!isOwnerPath && <Navbar />}
     { showHotelReg && <HotelReg/>}
+     <TokenLogger/>
       <div className='min-h-[70vh]'>
         <Routes>
          <Route path='/' element={<Home/>}/>

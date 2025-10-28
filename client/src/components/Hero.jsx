@@ -10,7 +10,8 @@ const Hero = () => {
     navigate(`/rooms?destination=${destination}`);
     //call api to save recent searched city
     await axios.post('/api/user/store-recent-search',{recentSearchedCity:destination},{
-      headers:{Authorization:`Bearer ${ await getToken()}` }
+      headers:{Authorization:`Bearer ${ await getToken() }` }
+
     })
    // add destination to  searchedCities max 3 recent searched cities
    setSearchedCities(prevSearchedCities=>{

@@ -4,6 +4,7 @@ import { assets, facilityIcons} from '../assets/assets'
 import {  useSearchParams } from 'react-router-dom'
 import StarRating from '../components/StarRating'
 import { useAppContext } from '../context/appContext'
+import { useMemo } from 'react'
 
 const CheckBox=({label,selected = false,onChange=()=>{}})=>{
   return (

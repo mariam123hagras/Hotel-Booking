@@ -37,6 +37,15 @@ const AddRoom = () => {
   }
   setLoading(true)
   try {
+
+     const token = await getToken();
+  
+    
+    if (!token) {
+      toast.error("Authentication missing. Please log in again.")
+      setLoading(false)
+      return;
+    }
     const formData = new FormData()
     formData.append('roomType', inputs.roomType)
     formData.append('pricePerNight', inputs.pricePerNight)
@@ -52,7 +61,7 @@ const AddRoom = () => {
     
     const response = await axios.post('/api/rooms', formData, {
       headers: {
-        Authorization: `Bearer ${getToken()}`
+        Authorization: `Bearer ${token}`
       }
     });
     

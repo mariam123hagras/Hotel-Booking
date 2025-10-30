@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom'
 import { assets, facilityIcons, roomCommonData} from '../assets/assets'
 import StarRating from '../components/StarRating.jsx'
 import { useAppContext } from '../context/appContext.jsx'
+import { useContext } from 'react'
+import toast from 'react-hot-toast'
 
 const RoomDetails = () => {
 
   const { id } = useParams()
-  const {rooms,getToken,axios,navigate}=useContext(AppContext)
+  const {rooms,getToken,axios,navigate}=useAppContext()
   const [room, setRoom] = useState(null)
   const [mainImage, setMainImage] = useState(null)
   const [checkInDate, setCheckInDate] = useState(null)
@@ -44,6 +46,7 @@ try {
   // onSubmitHandler function to check availability & book the room
   const onSubmitHandler=async(e)=>{
 try {
+  const token = await getToken() 
   e.preventDefault()
   if(!isAvailable){
     return checkAvailability();
@@ -51,7 +54,7 @@ try {
   else{
     const {data} = await axios.post('/api/bookings/book',{
       room:id,checkInDate,checkOutDate,guests,paymentMethod:'Pay at Hotel'
-    },{headers:{Authorization:`Bearer ${getToken()}`}})
+    },{headers:{Authorization:`Bearer ${token}`}})
     if(data.success){
       toast.success(data.message)
       navigate('/my-bookings')
@@ -68,11 +71,34 @@ try {
   }
 
   useEffect(() => {
-    const room = rooms.find(room => room._id === id)
-    room && setRoom(room)
-    room && setMainImage(room.images[0])
+    console.log("rooms",rooms)
+    if (rooms && Array.isArray(rooms)) {
+      const foundRoom = rooms.find(room => room._id === id)
+      if (foundRoom) {
+        setRoom(foundRoom)
+        setMainImage(foundRoom.images[0])
+      } else {
+        console.log('Room not found with id:', id)
+      }
+    } else {
+      console.log('Rooms is not available yet:', rooms)
+    }
+  }, [rooms, id])
 
-  }, [rooms])
+  // ✅ Show loading state while room is being fetched
+  if (!room) {
+    return (
+      <div className='py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32 flex justify-center items-center'>
+        <div className='text-center'>
+          <p className='text-lg'>Loading room details...</p>
+          {!rooms && <p className='text-sm text-gray-500 mt-2'>Waiting for rooms data to load</p>}
+        </div>
+      </div>
+    )
+  }
+
+
+
 
   return room && (
     <div className='py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32' >
@@ -147,7 +173,7 @@ justify-between  bg-white shadow-[0px_0px_20px_rgba(0,0,0,.15)] p-6 rounded-xl  
 
           <div className='flex flex-col'>
             <label htmlFor="checkInDate" className='font-medium'>Check-In</label>
-            <input  onChange={(e)=>setCheckInDate(e.target.value)} min={new Date().toISOString().split('T')[0]} 
+            <input  onChange={(e)=>setCheckInDate(e.target.value)} min={new Date().toISOString().split('T')[0]}  type='date'
               className='w-full rounded border border-gray-300 px-3 py-2 mt-1.5 
       outline-none' required />
           </div>

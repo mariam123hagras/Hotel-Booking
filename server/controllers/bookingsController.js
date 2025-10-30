@@ -39,70 +39,191 @@ const checkAvailability= async({checkInDate,checkOutDate,room})=>{
 //API to create a new booking
 // POST /api/bookings/book
 
-export const createBooking= async(req,res)=>{
-    try {
-        const {room,checkInDate,checkOutDate,guests}=req.body;
-        const user= req.user._id;
+// export const createBooking= async(req,res)=>{
+//     try {
+//         const {room,checkInDate,checkOutDate,guests}=req.body;
+//         const user= req.user._id;
 
-        // Before Booking Check Availability
-          const isAvailable=await checkAvailability({checkInDate,checkOutDate,room});
-          if(!isAvailable){
-            return res.json({success:false,message:"Room is not available"})
-          }
+//         // Before Booking Check Availability
+//           const isAvailable=await checkAvailability({checkInDate,checkOutDate,room});
+//           if(!isAvailable){
+//             return res.json({success:false,message:"Room is not available"})
+//           }
  
-          // Get totalPrice from Room
-          const roomData= await Room.findById(room).populate("hotel");
-          let totalPrice=roomData.pricePerNight;  
+//           // Get totalPrice from Room
+//           const roomData= await Room.findById(room).populate("hotel");
+//           let totalPrice=roomData.pricePerNight;  
 
-          // Calculate totalPrice based on nights
-          const checkIn=new Date(checkInDate)
-          const checkOut=new Date(checkOutDate)
-          const timeDiff = checkOut.getTime()-checkIn.getTime();
-          const nights=Math.ceil(timeDiff/(1000*3600*24));
+//           // Calculate totalPrice based on nights
+//           const checkIn=new Date(checkInDate)
+//           const checkOut=new Date(checkOutDate)
+//           const timeDiff = checkOut.getTime()-checkIn.getTime();
+//           const nights=Math.ceil(timeDiff/(1000*3600*24));
 
-          totalPrice*=nights;
-          const booking= await Bookings.create({
-            user,
-            room,
-            hotel:roomData.hotel._id,
-            guests:+guests,
-            checkInDate,
-            checkOutDate,
-            totalPrice,
-          })
+//           totalPrice*=nights;
+//           // const booking= await Bookings.create({
+//           //   user,
+//           //   room,
+//           //   hotel:roomData.hotel._id,
+//           //   guests:+guests,
+//           //   checkInDate,
+//           //   checkOutDate,
+//           //   totalPrice,
+//           // })
+//    
 
-  const mailOptions= {
-    from: process.env.SENDER_EMAIL, // sender address,
-    to:req.user.email,
-    subject: "Hotel Booking Details",
-    html: `
-    <h2>Your Booking Details</h2>
-    <p>Dear ${req.user.username},
-    </p>
-    <p>Thank you for booking with us! Here are your booking details:</p>
-    <ul>
-        <li><strong>Booking ID:</strong> ${booking._id}</li>   
-        <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>   
-        <li><strong>Location:</strong> ${roomData.hotel.address}</li>   
-        <li><strong>Date:</strong> ${booking.checkInDate.toDateString()}</li>   
-        <li><strong>Booking Amount:</strong> ${process.env.CURRENCY||'$'} ${booking.totalPrice} /night</li>   
+//   const mailOptions= {
+//     from: process.env.SENDER_EMAIL, // sender address,
+//     to:req.user.email,
+//     subject: "Hotel Booking Details",
+//     html: `
+//     <h2>Your Booking Details</h2>
+//     <p>Dear ${req.user.username},
+//     </p>
+//     <p>Thank you for booking with us! Here are your booking details:</p>
+//     <ul>
+//         <li><strong>Booking ID:</strong> ${booking._id}</li>   
+//         <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>   
+//         <li><strong>Location:</strong> ${roomData.hotel.address}</li>   
+//         <li><strong>Date:</strong> ${booking.checkInDate.toDateString()}</li>   
+//         <li><strong>Booking Amount:</strong> ${process.env.CURRENCY||'$'} ${booking.totalPrice} /night</li>   
     
-</ul>
-<p> We look forward to welcoming you!</p>
-<P>If you need to make any changes, feel free to contact us</p>
+// </ul>
+// <p> We look forward to welcoming you!</p>
+// <P>If you need to make any changes, feel free to contact us</p>
 
-    `// HTML body
-  }       
-await transporter.sendMail(mailOptions);
+//     `// HTML body
+//   }       
+// await transporter.sendMail(mailOptions);
 
-res.json({success:true,message:"Booking created successfully"})
+// res.json({success:true,message:"Booking created successfully"})
 
-    } catch (error) {
-        console.log(error)
-        res.json({success:false,message:"Failed to create booking"})
+//     } catch (error) {
+//         console.log(error)
+//         res.json({success:false,message:"Failed to create booking"})
+//     }
+// };
+
+export const createBooking = async (req, res) => {
+  let booking;
+  try {
+    const { room, checkInDate, checkOutDate, guests } = req.body;
+    const user = req.user._id;
+
+    console.log("Booking attempt:", { room, checkInDate, checkOutDate, guests, user });
+
+    // Convert dates to Date objects
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    
+    // Validate dates
+    if (checkIn >= checkOut) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Check-out date must be after check-in date" 
+      });
     }
-};
 
+    // Check availability
+    const isAvailable = await checkAvailability({ 
+      checkInDate: checkIn, 
+      checkOutDate: checkOut, 
+      room 
+    });
+    
+    if (!isAvailable) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Room is not available for the selected dates" 
+      });
+    }
+
+    // Get room data
+    const roomData = await Room.findById(room).populate("hotel");
+    if (!roomData) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Room not found" 
+      });
+    }
+
+    // Calculate total price
+    const timeDiff = checkOut.getTime() - checkIn.getTime();
+    const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const totalPrice = roomData.pricePerNight * nights;
+
+    // Create booking
+    booking = await Bookings.create({
+      user,
+      room,
+      hotel: roomData.hotel._id,
+      guests: +guests,
+      checkInDate: checkIn,
+      checkOutDate: checkOut,
+      totalPrice,
+      status: 'confirmed'
+    });
+
+    console.log("Booking created successfully:", booking._id);
+
+    // Try to send email (but don't fail the booking if email fails)
+    try {
+      const mailOptions = {
+        from: process.env.SENDER_EMAIL,
+        to: req.user.email,
+        subject: "Hotel Booking Confirmation",
+        html: `
+        <h2>Your Booking Confirmation</h2>
+        <p>Dear ${req.user.username},</p>
+        <p>Thank you for booking with us! Here are your booking details:</p>
+        <ul>
+            <li><strong>Booking ID:</strong> ${booking._id}</li>   
+            <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>   
+            <li><strong>Room Type:</strong> ${roomData.roomType}</li>   
+            <li><strong>Location:</strong> ${roomData.hotel.address}</li>   
+            <li><strong>Check-in Date:</strong> ${checkIn.toDateString()}</li>   
+            <li><strong>Check-out Date:</strong> ${checkOut.toDateString()}</li>   
+            <li><strong>Number of Nights:</strong> ${nights}</li>   
+            <li><strong>Guests:</strong> ${guests}</li>   
+            <li><strong>Total Amount:</strong> ${process.env.CURRENCY || '$'} ${totalPrice}</li>   
+        </ul>
+        <p>We look forward to welcoming you!</p>
+        <p>If you need to make any changes, feel free to contact us</p>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Confirmation email sent successfully to:", req.user.email);
+      
+    } catch (emailError) {
+      console.error("Failed to send email, but booking was created:", emailError);
+      // Don't throw error here - booking was successful
+    }
+
+    res.json({ 
+      success: true, 
+      message: "Booking created successfully",
+      bookingId: booking._id 
+    });
+
+  } catch (error) {
+    console.log("Booking creation failed:", error);
+    
+    // More specific error messages
+    let errorMessage = "Failed to create booking";
+    if (error.name === 'ValidationError') {
+      errorMessage = "Invalid booking data: " + Object.values(error.errors).map(e => e.message).join(', ');
+    } else if (error.code === 11000) {
+      errorMessage = "Duplicate booking detected";
+    }
+
+    res.status(500).json({ 
+      success: false, 
+      message: errorMessage,
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
 
 //API to get all bookings for a user
 //GET /api/bookings/user
@@ -116,7 +237,7 @@ export const getUserBookings = async (req, res) => {
       return res.status(401).json({ success: false, message: "User not authenticated" });
     }
 
-    const bookings = await Bookings.find({ user: req.user.userId })
+    const bookings = await Bookings.find({ user: req.user._id })
       .populate("room")
       .populate("hotel")
       .sort({ createdAt: -1 });
@@ -127,6 +248,8 @@ export const getUserBookings = async (req, res) => {
     res.status(500).json({ success: false, message: error.message || "Failed to fetch bookings" });
   }
 };
+
+
 
 
 export const getHotelBookings = async (req, res) => {

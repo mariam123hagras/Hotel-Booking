@@ -14,9 +14,10 @@ const ListRoom = () => {
 
   const fetchRooms=async()=>{
     try {
+      const token= await getToken()
       const {data}=await axios.get('/api/rooms/owner',{
         headers:{
-          Authorization:`Bearer ${getToken()}`
+          Authorization:`Bearer ${token}`
         }
       })
       if(data?.success){
@@ -67,7 +68,7 @@ const toggleAvailability=async(roomId)=>{
             <tr>
               <th className='py-3 px-4 text-gray-800 font-medium'>Name</th>
               <th className='py-3 px-4 text-gray-800 font-medium max-sm:hidden'>Facility</th>
-              <th className='py-3 px-4 text-gray-800 font-medium '>Price / night</th>
+              <th className='py-3 px-2 text-gray-800 font-medium '>Price / night</th>
               <th className='py-3 px-4 text-gray-800 font-medium text-center'>Actions</th>
             </tr>
           </thead>

@@ -9,7 +9,7 @@ const RecommenedHotels = () => {
   const {rooms,searchedCities}= useAppContext()
   const [recommended,setRecommended]=useState([]);
   const filterHotels=()=>{
-    const filteredHotels=rooms.slice().filter(room=>searchedCities.icludes(room.hotel.city));
+    const filteredHotels=rooms.slice().filter(room=>searchedCities.includes(room.hotel.city));
    setRecommended(filteredHotels);
 }
 

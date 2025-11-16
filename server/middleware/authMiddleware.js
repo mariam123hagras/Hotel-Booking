@@ -4,8 +4,7 @@ import { getAuth } from "@clerk/express";
 export const protect = async (req, res, next) => {
   try {
     const { userId } = getAuth(req);
-    console.log("Authenticated Clerk userId:", userId);
-
+   
     if (!userId) {
       return res.status(401).json({ success: false, message: "Not authorized" });
     }
@@ -13,8 +12,7 @@ export const protect = async (req, res, next) => {
     // Find user by the Clerk userId (this should match the _id in your database)
     const user = await User.findById(userId);
     
-    console.log("Fetched user:", user);
-    
+   
     if (!user) {
       console.log("User not found in database, might be webhook issue");
       return res.status(404).json({ 

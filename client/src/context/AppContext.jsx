@@ -32,8 +32,10 @@ export const AppProvider=({children})=>{
   
    const fetchUser=async()=>{
   try {
+    
+    const token =await getToken();
    const {data}= await axios.get('/api/user',{headers:{
-        Authorization:`Bearer ${await getToken()}`
+        Authorization:`Bearer ${token}`
     }})
     
     if(data.success){

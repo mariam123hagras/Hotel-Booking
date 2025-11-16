@@ -19,9 +19,9 @@ const clerkWebhooks = async (req, res) => {
        
 
         // Validate required data
-        // if (!data || !data.id) {
-        //     throw new Error("Invalid webhook data: missing user ID");
-        // }
+        if (!data || !data.id) {
+            throw new Error("Invalid webhook data: missing user ID");
+        }
 
         // Safe data extraction with comprehensive fallbacks
         const getEmail = (userData) => {
@@ -58,7 +58,7 @@ const clerkWebhooks = async (req, res) => {
             image: getImage(data),
         };
 
-        // console.log("Processed user data for DB:", userData);
+        console.log("Processed user data for DB:", userData);
 
         // Switch Case for different Events
         switch (type) {
@@ -66,11 +66,11 @@ const clerkWebhooks = async (req, res) => {
                 // Check if user already exists to avoid duplicates
                 const existingUser = await User.findById(data.id);
                 if (existingUser) {
-                    // console.log("User already exists, updating instead:", data.id);
+                    console.log("User already exists, updating instead:", data.id);
                     await User.findByIdAndUpdate(data.id, userData, { new: true });
                 } else {
                     await User.create(userData);
-                    // console.log("User Created:", data.id);
+                    console.log("User Created:", data.id);
                 }
                 break;
             }
@@ -79,31 +79,31 @@ const clerkWebhooks = async (req, res) => {
                     new: true,
                     runValidators: true 
                 });
-                // console.log("User Updated:", data.id);
+                console.log("User Updated:", data.id);
                 break;
             }
             case "user.deleted": {
                 await User.findByIdAndDelete(data.id);
-                // console.log("User Deleted:", data.id);
+                console.log("User Deleted:", data.id);
                 break;
             }
             default:
-                // console.log("Unhandled webhook type:", type);
+                console.log("Unhandled webhook type:", type);
                 break;
         }
 
         res.json({ success: true, message: 'Webhook Received' });
 
     } catch (error) {
-        // console.error("Webhook error:", error);
-        // console.error("Error details:", {
-        //     message: error.message,
-        //     stack: error.stack
-        // });
+        console.error("Webhook error:", error);
+        console.error("Error details:", {
+            message: error.message,
+            stack: error.stack
+        });
         res.status(500).json({ 
             success: false, 
-            // message: error.message,
-            // details: "Check server logs for more information"
+            message: error.message,
+            details: "Check server logs for more information"
         });
     }
 }

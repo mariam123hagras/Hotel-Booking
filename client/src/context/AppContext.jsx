@@ -21,7 +21,9 @@ export const AppProvider=({children})=>{
 
    const fetchRooms=async(city)=>{
     try {
+      console.log('Fetching rooms...'); // Debug log
       const {data}=await axios.get('/api/rooms')
+      console.log('Rooms API response:', data); // Debug log
       if(data?.success){setRooms(data.rooms)}
       else{toast.error(data.message)}
     } catch (error) {

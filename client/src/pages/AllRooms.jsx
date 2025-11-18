@@ -42,7 +42,7 @@ const AllRooms = () => {
   const roomTypes=[
     'Single Bed',
     'Double Bed',
-    'luxury Room',
+    'Luxury Room',
     'Family Suite'
   ];
 

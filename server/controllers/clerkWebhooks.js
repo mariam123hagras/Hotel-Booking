@@ -51,18 +51,19 @@ const clerkWebhooks = async (req, res) => {
             return userData.image_url || userData.profile_image_url || '';
         };
 
-        const userData = {
+     
+
+        // console.log("Processed user data for DB:", userData);
+
+        // Switch Case for different Events
+        switch (type) {
+            case "user.created": {
+                   const userData = {
             _id: data.id,
             email: getEmail(data),
             username: getUsername(data),
             image: getImage(data),
         };
-
-        console.log("Processed user data for DB:", userData);
-
-        // Switch Case for different Events
-        switch (type) {
-            case "user.created": {
                 // Check if user already exists to avoid duplicates
                 const existingUser = await User.findById(data.id);
                 if (existingUser) {
@@ -75,6 +76,12 @@ const clerkWebhooks = async (req, res) => {
                 break;
             }
             case "user.updated": {
+                   const userData = {
+            _id: data.id,
+            email: getEmail(data),
+            username: getUsername(data),
+            image: getImage(data),
+        };
                 await User.findByIdAndUpdate(data.id, userData, { 
                     new: true,
                     runValidators: true 

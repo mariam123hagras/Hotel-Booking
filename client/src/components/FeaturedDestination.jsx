@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppContext } from '../context/appContext'
+import { useAppContext } from '../context/AppContext'
 import HotelCard from './HotelCard'
 import Title from './Title'
 

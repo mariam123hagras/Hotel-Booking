@@ -1,7 +1,7 @@
 import React, { useState ,useEffect} from 'react'
 
 import Title from '../../components/Title'
-import { useAppContext } from '../../context/appContext'
+import { useAppContext } from '../../context/AppContext.jsx'
 import {toast} from 'react-hot-toast'
 
 

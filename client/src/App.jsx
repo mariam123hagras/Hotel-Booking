@@ -14,7 +14,7 @@ import ListRoom from './pages/HotelOwner/ListRoom';
 import {Toaster} from 'react-hot-toast'
 import { useAppContext } from './context/AppContext';
 import TokenLogger from './components/TokenLogger';
-import Loader from './components/loader';
+import Loader from './components/Loader';
 const App = () => {
 
   const isOwnerPath = useLocation().pathname.includes("owner");

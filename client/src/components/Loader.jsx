@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import {useParams} from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
-const loader = () => {
+const Loader = () => {
     const {navigate} = useAppContext();
     const {nextUrl}=useParams();
     useEffect(()=>{
@@ -19,4 +19,4 @@ const loader = () => {
   )
 }
 
-export default loader
+export default Loader

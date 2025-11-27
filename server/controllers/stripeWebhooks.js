@@ -5,13 +5,16 @@ import Bookings from '../models/Bookings.js';
 
 export const stripeWebhooks=async(req,res)=>{
     //Stripe Gateway Initialization
+    console.log('Stripe Webhook received');
     const stripeInstance=new stripe(process.env.STRIPE_SECRET_KEY);
+    
 
     const sig =req.headers['stripe-signature'];
     let event;
     
     try {
         event=stripeInstance.webhooks.constructEvent(req.body,sig,process.env.STRIPE_WEBHOOK_SECRET);
+      
     } catch (error) {
         res.status(400).send(`Webhook Error: ${error.message}`);
     }
@@ -24,8 +27,10 @@ export const stripeWebhooks=async(req,res)=>{
             payment_intent:paymentIntentId,
 
         })
+        console.log(session);
 
         const {bookingId}=session.data[0].metadata;
+        console.log('Payment succeeded for booking:',bookingId);
 
         //Mark Payment as Paid
 

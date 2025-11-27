@@ -235,8 +235,10 @@ export const getHotelBookings = async (req, res) => {
 export const stripePayment=async(req,res)=>{
 try {
   const {bookingId}=req.body;
-  const booking=await Bookings.findById(bookingId);
+  const booking = await Bookings.findById(bookingId);
+
   const roomData=await Room.findById(booking.room).populate('hotel');
+  
   const totalPrice=booking.totalPrice;
   const {origin}=req.headers;
 
@@ -255,8 +257,9 @@ try {
     mode:'payment',
     success_url:`${origin}/loader/my-bookings`,
     cancel_url:`${origin}/my-bookings`,
-    metadata:{bookingId,}
+    metadata:{bookingId: bookingId.toString()}
   });
+    console.log('✅ Stripe session created with metadata:', session.metadata);
   res.json({success:true,url:session.url})
 } catch (error) {
   res.json({success:false,message:"Payment failed"})

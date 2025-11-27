@@ -14,6 +14,7 @@ import ListRoom from './pages/HotelOwner/ListRoom';
 import {Toaster} from 'react-hot-toast'
 import { useAppContext } from './context/AppContext';
 import TokenLogger from './components/TokenLogger';
+import Loader from './components/loader';
 const App = () => {
 
   const isOwnerPath = useLocation().pathname.includes("owner");
@@ -31,6 +32,8 @@ const App = () => {
          <Route path='/rooms' element={<AllRooms/>}/>
          <Route path='/rooms/:id' element={<RoomDetails/>} />
          <Route path='/my-bookings' element={<MyBooking/>} />
+         
+         <Route path='/loader/:nextUrl' element={<Loader/>} />
          
          <Route path='/owner' element={<LayOut/>}>
          <Route index element={<Dashboard/>}/>

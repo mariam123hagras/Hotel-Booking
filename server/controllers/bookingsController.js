@@ -6,6 +6,7 @@ import Room from "../models/Room.js";
 import Bookings from "../models/Bookings.js";
 import Hotel from "../models/Hotel.js";
 import transporter from "../configs/nodemailer.js";
+import stripe from "stripe";
 
 const checkAvailability= async({checkInDate,checkOutDate,room})=>{
     try {
@@ -231,5 +232,36 @@ export const getHotelBookings = async (req, res) => {
   }
 };
 
+export const stripePayment=async(req,res)=>{
+try {
+  const {bookingId}=req.body;
+  const booking=await Bookings.findById(bookingId);
+  const roomData=await Room.findById(booking.room).populate('hotel');
+  const totalPrice=booking.totalPrice;
+  const {origin}=req.headers;
+
+  const stripeInstance= new stripe(process.env.STRIPE_SECRET_KEY);
+  const line_items=[{price_data:{
+    currency:'usd',
+    product_data:{name:roomData.hotel.name},
+    unit_amount:totalPrice*100
+  },
+   quantity: 1 },
+ 
+  ]
+  //Create Checkout Session
+  const session=await stripeInstance.checkout.sessions.create({
+    line_items,
+    mode:'payment',
+    success_url:`${origin}/loader/my-bookings`,
+    cancel_url:`${origin}/my-bookings`,
+    metadata:{bookingId,}
+  });
+  res.json({success:true,url:session.url})
+} catch (error) {
+  res.json({success:false,message:"Payment failed"})
+  console.error("Stripe Payment Error:", error.message);
+}
+}
    
 

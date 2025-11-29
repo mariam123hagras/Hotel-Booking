@@ -18,7 +18,7 @@ const AddRoom = () => {
     roomType:'',
     pricePerNight:0,
     amenities:{
-      'Free Wifi':false,
+      'Free WiFi':false,
       'Free Breakfast':false,
       'Room Service':false,
       'Mountain View':false,
@@ -74,7 +74,7 @@ const AddRoom = () => {
         roomType: '',
         pricePerNight: 0,
         amenities: {
-          'Free Wifi': false,
+          'Free WiFi': false,
           'Free Breakfast': false,
           'Room Service': false,
           'Mountain View': false,

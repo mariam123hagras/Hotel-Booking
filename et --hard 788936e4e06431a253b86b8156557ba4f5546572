@@ -1,0 +1,172 @@
+[33mcommit 7159314e41cf7ae77bea280e10e9d1916863a7d2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmary[m[33m, [m[1;31morigin/mary[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Wed Dec 3 17:31:36 2025 +0200
+
+    fix
+
+[33mcommit 669c5c550f67701635861206b41fa9b78fed500c[m
+Merge: fc7db06 3c86208
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Wed Dec 3 17:21:42 2025 +0200
+
+    Merge branch 'mary' of https://github.com/mariam123hagras/Hotel-Booking into mary
+
+[33mcommit fc7db06213dd0e4b259d71ea49546411c2e3a236[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Wed Dec 3 17:19:52 2025 +0200
+
+    test
+
+[33mcommit 3c862080aab8fa4b39aa15ce239ff552ddd99405[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Wed Dec 3 17:02:04 2025 +0200
+
+    FIX
+
+[33mcommit 788936e4e06431a253b86b8156557ba4f5546572[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Sat Nov 29 17:50:46 2025 +0200
+
+    fix wifi icon
+
+[33mcommit 4a818405e2ad61b546b5a556e9a57b0feed79012[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Sat Nov 29 17:20:37 2025 +0200
+
+    backend url
+
+[33mcommit d756997a5c72e53013d0d6fe421b6e981aee1fb1[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Nov 27 20:56:31 2025 +0200
+
+    FIX
+
+[33mcommit 86aa8b63a2378187c590029e0b2a0454cfde6952[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Nov 27 16:51:30 2025 +0200
+
+    Fix
+
+[33mcommit 2d63457dddbb77bac400f6c2e2a052d2bdbafd83[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Nov 27 16:36:52 2025 +0200
+
+    Fix
+
+[33mcommit 859eea8dd38b4ba71e1c434d52f1e08a2d8cfa36[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Nov 27 16:35:17 2025 +0200
+
+    stripe added
+
+[33mcommit 7a43ab452390476bc5317a74de183843f0420146[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Nov 18 16:55:45 2025 +0200
+
+    fix
+
+[33mcommit 392eaf737f6889a780dfd5215d004365b0511dad[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Nov 18 16:53:10 2025 +0200
+
+    fix
+
+[33mcommit 8d563c93187b3b0e48ed8940bf25259c61fe2dce[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Nov 18 16:51:23 2025 +0200
+
+    fix upper case for files to build
+
+[33mcommit 2497fafd16f342c4a03c60c8d625cf92a59a8f71[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Nov 18 16:26:49 2025 +0200
+
+    fix
+
+[33mcommit ca31650f56cd5c68d9445f903b5c4e8935dc8629[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Nov 18 16:10:55 2025 +0200
+
+    fixing styles
+
+[33mcommit 534a749b705fd8f5a1d50da0c03385971dd12dff[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Sun Nov 16 16:55:44 2025 +0200
+
+    ngrok valid secret
+
+[33mcommit 14bcedd20bbddfe959de003897efbbb2bd99da7d[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Sun Nov 16 16:11:37 2025 +0200
+
+    adding vercel json and modifying webhooks
+
+[33mcommit fec37473fd25685af7109897cdc422496231ddbb[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Oct 30 23:00:16 2025 +0200
+
+    fix
+
+[33mcommit 0ec5137d0f6cef597b868eacf4b7b2f5cb6e5467[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Oct 30 23:58:03 2025 +0300
+
+    Remove .env file from git tracking
+
+[33mcommit 9b0ad4d1b04afc2d6af6faf3e4107a4af002a311[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Oct 30 23:46:40 2025 +0300
+
+    fixed booking controllers and token in frontend
+
+[33mcommit 07c3bd327d86d5eb8931d69a6102f243070d6373[m
+Merge: 5337c14 41854d0
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Oct 28 19:29:24 2025 +0300
+
+    Merge branch 'mary' of https://github.com/mariam123hagras/Hotel-Booking into mary
+
+[33mcommit 5337c1431844e9e6daec92d17ed2915ebfb8c824[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Tue Oct 28 19:28:04 2025 +0300
+
+    Add TokenLogger component and Vercel configuration files
+
+[33mcommit 41854d069a9ff5f071a65173d1fae1a456821a50[m
+Merge: 3810978 6e965ad
+Author: Mariam Hagras <125399817+mariam123hagras@users.noreply.github.com>
+Date:   Mon Oct 13 22:56:00 2025 +0300
+
+    Merge pull request #1 from mariam123hagras/feature
+    
+    Update bookingRoutes.js
+
+[33mcommit 6e965ad8ac8f4b41b4d90739974e1a0aa208689d[m
+Author: Mariam Hagras <125399817+mariam123hagras@users.noreply.github.com>
+Date:   Mon Oct 13 22:54:55 2025 +0300
+
+    Update bookingRoutes.js
+
+[33mcommit 6cd6b01b54df52b4dc34115c8bbb2df9fb554012[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Thu Sep 18 20:01:39 2025 +0300
+
+    Fix Clerk webhook verification and server setup
+
+[33mcommit 3810978fe3fa7c2699aa2106389681697e14363d[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Mon Sep 15 20:12:03 2025 +0300
+
+    connecting front with back
+
+[33mcommit 479dc40aae93e63c9c631dc29eb01d256a8e2a94[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Sat Sep 13 21:52:43 2025 +0300
+
+    first commit
+
+[33mcommit f0bf080f73e970b793ea2b1be67ee5ccc822044d[m
+Author: Mariam Hagras <mariamhagras99@gmail.com>
+Date:   Sat Sep 13 21:50:32 2025 +0300
+
+    Initial commit

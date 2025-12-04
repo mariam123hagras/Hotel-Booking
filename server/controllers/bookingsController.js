@@ -165,7 +165,7 @@ export const createBooking = async (req, res) => {
 
 export const getUserBookings = async (req, res) => {
   try {
-    console.log("req.user:", req.user);
+    // console.log("req.user:", req.user);
     if (!req.user) {
       return res.status(401).json({ success: false, message: "User not authenticated" });
     }
@@ -234,7 +234,10 @@ export const getHotelBookings = async (req, res) => {
 
 export const stripePayment=async(req,res)=>{
 try {
+  // console.log('Stripe payment initiated with body:', req.body);
   const {bookingId}=req.body;
+  // console.log('Initiating payment for booking ID:', bookingId);
+
   const booking = await Bookings.findById(bookingId);
 
   const roomData=await Room.findById(booking.room).populate('hotel');
@@ -259,11 +262,12 @@ try {
     cancel_url:`${origin}/my-bookings`,
     metadata:{bookingId: bookingId.toString()}
   });
-    console.log('✅ Stripe session created with metadata:', session.metadata);
+    // console.log(' Stripe session created with metadata:', session.metadata);
   res.json({success:true,url:session.url})
 } catch (error) {
   res.json({success:false,message:"Payment failed"})
   console.error("Stripe Payment Error:", error.message);
+
 }
 }
    

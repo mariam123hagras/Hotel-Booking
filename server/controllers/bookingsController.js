@@ -29,6 +29,12 @@ const checkAvailability= async({checkInDate,checkOutDate,room})=>{
   export const checkAvailabilityAPI= async(req,res)=>{
     try {
         const {room,checkInDate,checkOutDate}=req.body;
+        if (!room || !checkInDate || !checkOutDate) {
+            return res.status(400).json({
+                success: false,
+                message: "room, checkInDate, and checkOutDate are required"
+            });}
+            
         const isAvailable=await checkAvailability({checkInDate,checkOutDate,room});
         res.json({success:true,isAvailable})
     } catch (error) {
@@ -43,7 +49,7 @@ export const createBooking = async (req, res) => {
     const { room, checkInDate, checkOutDate, guests } = req.body;
     const user = req.user._id;
 
-    console.log("Booking attempt:", { room, checkInDate, checkOutDate, guests, user });
+    // console.log("Booking attempt:", { room, checkInDate, checkOutDate, guests, user });
 
     // Convert dates to Date objects
     const checkIn = new Date(checkInDate);
@@ -97,7 +103,7 @@ export const createBooking = async (req, res) => {
       status: 'pending'
     });
 
-    console.log("Booking created successfully:", booking._id);
+    // console.log("Booking created successfully:", booking._id);
 
     // Try to send email (but don't fail the booking if email fails)
     try {
@@ -126,7 +132,7 @@ export const createBooking = async (req, res) => {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log("Confirmation email sent successfully to:", req.user.email);
+      // console.log("Confirmation email sent successfully to:", req.user.email);
       
     } catch (emailError) {
       console.error("Failed to send email, but booking was created:", emailError);
@@ -141,21 +147,10 @@ export const createBooking = async (req, res) => {
 
   } catch (error) {
     console.log("Booking creation failed:", error);
-    
-    // More specific error messages
-    let errorMessage = "Failed to create booking";
-    if (error.name === 'ValidationError') {
-      errorMessage = "Invalid booking data: " + Object.values(error.errors).map(e => e.message).join(', ');
-    } else if (error.code === 11000) {
-      errorMessage = "Duplicate booking detected";
-    }
-
     res.status(500).json({ 
       success: false, 
-      message: errorMessage,
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
+      message: error.message || "Booking creation failed" 
+    });}
 };
 
 //API to get all bookings for a user
@@ -196,7 +191,7 @@ export const getHotelBookings = async (req, res) => {
       return res.json({ success: false, message: "No Hotel found for this user" });
     }
     
-    console.log("Found hotel:", hotel);
+    // console.log("Found hotel:", hotel);
     
     // Find bookings for this hotel
     const bookings = await Bookings.find({ hotel: hotel._id })
@@ -205,7 +200,7 @@ export const getHotelBookings = async (req, res) => {
       .populate("user", "username email")
       .sort({ createdAt: -1 });
     
-    console.log("Found bookings:", bookings.length);
+    // console.log("Found bookings:", bookings.length);
     
     // Total Bookings
     const totalBookings = bookings.length;

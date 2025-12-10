@@ -63,15 +63,15 @@ const clerkWebhooks = async (req, res) => {
             email: getEmail(data),
             username: getUsername(data),
             image: getImage(data),
-        };
+                                   };
                 // Check if user already exists to avoid duplicates
                 const existingUser = await User.findById(data.id);
                 if (existingUser) {
-                    console.log("User already exists, updating instead:", data.id);
+                    // console.log("User already exists, updating instead:", data.id);
                     await User.findByIdAndUpdate(data.id, userData, { new: true });
                 } else {
                     await User.create(userData);
-                    console.log("User Created:", data.id);
+                    // console.log("User Created:", data.id);
                 }
                 break;
             }
@@ -86,12 +86,12 @@ const clerkWebhooks = async (req, res) => {
                     new: true,
                     runValidators: true 
                 });
-                console.log("User Updated:", data.id);
+                // console.log("User Updated:", data.id);
                 break;
             }
             case "user.deleted": {
                 await User.findByIdAndDelete(data.id);
-                console.log("User Deleted:", data.id);
+                // console.log("User Deleted:", data.id);
                 break;
             }
             default:

@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect,useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useUser,useAuth} from "@clerk/clerk-react";
 import {toast} from 'react-hot-toast';
-import { use } from 'react';
+
 
 axios.defaults.baseURL=import.meta.env.VITE_BACKEND_URL;
 
@@ -21,9 +21,9 @@ export const AppProvider=({children})=>{
 
    const fetchRooms=async(city)=>{
     try {
-      console.log('Fetching rooms...'); // Debug log
+      // console.log('Fetching rooms...'); // Debug log
       const {data}=await axios.get('/api/rooms')
-      console.log('Rooms API response:', data); // Debug log
+      // console.log('Rooms API response:', data); // Debug log
       if(data?.success){setRooms(data.rooms)}
       else{toast.error(data.message)}
     } catch (error) {

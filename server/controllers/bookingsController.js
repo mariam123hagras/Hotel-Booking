@@ -182,7 +182,7 @@ export const getUserBookings = async (req, res) => {
 
 export const getHotelBookings = async (req, res) => {
   try {
-    console.log("User in getHotelBookings:", req.user);
+    // console.log("User in getHotelBookings:", req.user);
     
     // Find hotel by owner ID (using req.user._id from your protect middleware)
     const hotel = await Hotel.findOne({ owner: req.user._id });

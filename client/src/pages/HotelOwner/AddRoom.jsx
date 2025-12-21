@@ -65,7 +65,7 @@ const AddRoom = () => {
       }
     });
     
-    console.log('Full response:', response);
+    // console.log('Full response:', response);
     
     // If we get a successful HTTP status (200-299), consider it a success
     if (response.status >= 200 && response.status < 300) {
@@ -92,7 +92,7 @@ const AddRoom = () => {
     }
   } catch (error) {
     console.error('Error details:', error.response);
-    toast.error(error.response?.data?.message || error.message)
+    toast.error(error.message)
   }
   finally {
     setLoading(false)
@@ -101,7 +101,7 @@ const AddRoom = () => {
 
   return (
     <form onSubmit={onSubmitHandler}> 
-      <Title align='left' font='outfit' title='Add Room' subTitle='Fill in the details carefully and accurate roo details,pricing,and amenities,to enhance the user booking experience' />
+      <Title align='left' font='font-outfit' title='Add Room' subTitle='Fill in the details carefully and accurate roo details,pricing,and amenities,to enhance the user booking experience' />
       {/* Upload Area For Images  */}
       <p className='text-gray-800 mt-10'>Images</p>
       <div className='grid grid-cols-2 sm:flex gap-4 my-2 flex-wrap'>

@@ -19,12 +19,12 @@ const Dashboard = () => {
         headers:{
           Authorization:`Bearer ${ await getToken()}`
         } })
-        console.log("API Response:", data); // Check the response
+        // console.log("API Response:", data); // Check the response
        
         
         if(data?.success){
           setDashboardData(data.dashboardData)
-          console.log(data.dashboardData)
+          // console.log(data.dashboardData)
         }
         else{
           toast.error(data.message)
@@ -40,12 +40,12 @@ const Dashboard = () => {
     } },[user])
   return (
     <div>
-      <Title align='left' font='outfit' title='Dashboard'
+      <Title align='left' font='font-outfit' title='Dashboard'
         subTitle='Monitor your room listings, track bookings and analyze revenue-all
       in one place. Stay updated with real-time insights to ensure smooth operations' />
       <div className='flex gap-4 my-8'>
         {/* Total Bookings */}
-        <div className='bg-primary/3 border border-primary/10 rounded flex p-4 pr-8'>
+        <div className=' border  rounded flex p-4 pr-8'>
           <img src={assets.totalBookingIcon} alt="" className='max-sm:hidden h-10' />
 
           <div className='flex flex-col sm:ml-4 font-medium'>
@@ -55,7 +55,7 @@ const Dashboard = () => {
         </div>
         {/* Total Revenue */}
         <div>
-          <div className='bg-primary/3 border border-primary/10 rounded flex p-4 pr-8'>
+          <div className=' border rounded flex p-4 pr-8'>
             <img src={assets.totalRevenueIcon} alt="" className='max-sm:hidden h-10' />
 
             <div className='flex flex-col sm:ml-4 font-medium'>

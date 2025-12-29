@@ -10,9 +10,9 @@ const CheckBox=({label,selected = false,onChange=()=>{}})=>{
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
       <input type="checkbox" checked={selected} onChange={(e)=>onChange(e.
-        target.checked,label
+        target.checked
       )} />
-      <span className='font-light selected-none'>{label}</span>
+      <span className='font-light select-none'>{label}</span>
     </label>
   )
 }
@@ -23,7 +23,7 @@ const RadioButton=({label,selected = false,onChange=()=>{}})=>{
       <input type="radio" name='sortOption'  checked={selected} onChange={()=>onChange(
         label
       )} />
-      <span className='font-light selected-none'>{label}</span>
+      <span className='font-light select-none'>{label}</span>
     </label>
   )
 }

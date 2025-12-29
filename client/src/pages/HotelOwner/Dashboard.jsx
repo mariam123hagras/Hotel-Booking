@@ -24,7 +24,7 @@ const Dashboard = () => {
         
         if(data?.success){
           setDashboardData(data.dashboardData)
-          // console.log(data.dashboardData)
+          console.log(data.dashboardData)
         }
         else{
           toast.error(data.message)
@@ -83,6 +83,7 @@ const Dashboard = () => {
 
           <tbody className='text-sm'>
             {dashboardData.bookings.map((item, index) => (
+             
               <tr key={index}>
                 <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
                   {item.user.username}

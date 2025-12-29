@@ -1,7 +1,7 @@
 import express from 'express';
 import upload from '../middleware/uploadMiddleware.js';
 import { protect } from '../middleware/authMiddleware.js';
-import { createOffer, getOffers, getOwnerOffers, deleteOffer } from '../controllers/offerController.js';
+import { createOffer, getOffers, getOwnerOffers, toggleOffer } from '../controllers/offerController.js';
 
 const offerRouter= express.Router();
 

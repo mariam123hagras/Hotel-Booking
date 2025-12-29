@@ -20,6 +20,11 @@ const Sidebar = () => {
       path: "/owner/list-room",
       icon: assets.listIcon,
     },
+    {
+      name: "Add Offer",
+      path: "/owner/add-offer",
+      icon: assets.addIcon,
+    },
   ]
 
   return (

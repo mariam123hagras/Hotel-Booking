@@ -5,7 +5,8 @@ import {v2 as cloudinary} from 'cloudinary';
 // API to create an offer
 export const createOffer= async(req,res)=>{
     try {
-        const {title,description,priceOff,expiryDate}=req.body;
+        const {title,description,priceOff,expiryDate,amenities,pricePerNight,roomType}=req.body;
+        
         const hotel= await Hotel.findOne({owner:req.auth().userId})
         if(!hotel)  return res.json({success:false,message:"No Hotel found"})
         //upload images to cloudinary
@@ -16,12 +17,15 @@ export const createOffer= async(req,res)=>{
     // Wait for all uploads to complete 
     const images =   await Promise.all(uploadImages)
     await Offer.create({
-        hotel:hotel._id,
-        title,
-        description,
-        images,
-        priceOff:+priceOff,
-        expiryDate,
+        hotel: hotel._id,
+            title,
+            description,
+            images,
+            priceOff: +priceOff, 
+            expiryDate: new Date(expiryDate), 
+            roomType,
+            pricePerNight: +pricePerNight, 
+            amenities:JSON.parse(amenities),
     })
     res.json({success:true ,message:"Offer created successfully"})
         } catch (error) {

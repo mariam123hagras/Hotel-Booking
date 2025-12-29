@@ -23,7 +23,7 @@ const Sidebar = () => {
     {
       name: "Add Offer",
       path: "/owner/add-offer",
-      icon: assets.addIcon,
+      icon: assets.offerIcon,
     },
   ]
 

@@ -7,6 +7,9 @@ const offerSchema = new mongoose.Schema({
     images:[{type:String}],
     priceOff:{type:Number,required:true},
     expiryDate:{type:Date,required:true},
+    amenities:{type:Array,required:true},
+    pricePerNight:{type:Number,required:true},
+    roomType:{type:String,required:true},
 },{timestamps:true});
 
 const Offer= mongoose.model('Offer',offerSchema);

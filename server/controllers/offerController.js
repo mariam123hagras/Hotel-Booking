@@ -1,4 +1,4 @@
-import Offer from "../models/Offer";
+import Offer from '../models/Offer.js';
 import Hotel from "../models/Hotel.js";
 import {v2 as cloudinary} from 'cloudinary';
 

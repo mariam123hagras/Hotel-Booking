@@ -10,6 +10,7 @@ import connectCloudinary from './configs/cloudinary.js';
 import roomRouter from './routes/roomRoutes.js';
 import bookingRouter from './routes/bookingRoutes.js';
 import { stripeWebhooks } from './controllers/stripeWebhooks.js';
+import offerRouter from './routes/offerRoutes.js';
 
 connectDB();
 connectCloudinary();
@@ -29,6 +30,7 @@ app.use('/api/user',userRouter)
 app.use('/api/hotels',hotelRouter)
 app.use('/api/rooms',roomRouter)
 app.use('/api/bookings',bookingRouter)
+app.use('/api/offers',offerRouter);
 
 const PORT=process.env.PORT ||3000;
 

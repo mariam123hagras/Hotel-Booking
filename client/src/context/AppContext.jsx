@@ -22,9 +22,9 @@ export const AppProvider=({children})=>{
 
    const fetchRooms=async(city)=>{
     try {
-      // console.log('Fetching rooms...'); // Debug log
+      
       const {data}=await axios.get('/api/rooms')
-      // console.log('Rooms API response:', data); // Debug log
+   
       if(data?.success){setRooms(data.rooms)}
       else{toast.error(data.message)}
     } catch (error) {
@@ -35,8 +35,13 @@ export const AppProvider=({children})=>{
    const fetchOffers=async()=>{
     try {
       const {data}=await axios.get('/api/offers')
-      if(data?.success){setOffers(data.offers)}
+       if (data?.success) {
+      setOffers(data.offers);
+      
+    }
+     
       else{toast.error(data.message)}
+
     } catch (error) {
       toast.error(error.message)
     }
@@ -45,10 +50,13 @@ export const AppProvider=({children})=>{
    const fetchUser=async()=>{
   try {
     
-    const token =await getToken();
+    const token =await getToken()
    const {data}= await axios.get('/api/user',{headers:{
         Authorization:`Bearer ${token}`
     }})
+    console.log('User Data:', data);
+
+
     
     if(data.success){
         setIsOwner(data.role==='hotelOwner')

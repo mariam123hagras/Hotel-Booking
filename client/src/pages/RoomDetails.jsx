@@ -107,7 +107,7 @@ try {
 
       <div className='flex flex-col md:flex-row items-start md:items-center gap-2'>
         <h1 className='text-3xl md:text-4xl font-playfair' >{room.hotel.name} <span className='font-inter text-sm'>({room.roomType})</span></h1>
-        <p className='text-xs font-inter py-1.5 px-3 text-white bg-orange-500 rounded-full'>20% OFF</p>
+        
       </div>
 
       {/* Room Rating */}

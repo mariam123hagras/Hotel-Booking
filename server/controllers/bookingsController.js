@@ -102,7 +102,7 @@ export const createBooking = async (req, res) => {
    
 
     // Get room data
-    const roomData = await Room.findById(room).populate("hotel");
+    const roomData = await Room.findById(roomId).populate("hotel");
     if (!roomData) {
       return res.status(404).json({ 
         success: false, 
@@ -114,6 +114,7 @@ export const createBooking = async (req, res) => {
     // Calculate total price
     const timeDiff = checkOut.getTime() - checkIn.getTime();
     const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const totalPrice = pricePerNight * nights;
     
 
     // Create booking

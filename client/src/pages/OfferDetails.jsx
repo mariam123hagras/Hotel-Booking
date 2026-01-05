@@ -53,7 +53,7 @@ try {
   }
   else{
     const {data} = await axios.post('/api/bookings/book',{
-      room:id,checkInDate,checkOutDate,guests,paymentMethod:'Pay at Hotel'
+      offer:id,checkInDate,checkOutDate,guests,paymentMethod:'Pay at Hotel'
     },{headers:{Authorization:`Bearer ${token}`}})
     if(data.success){
       toast.success(data.message)

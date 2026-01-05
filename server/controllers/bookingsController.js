@@ -8,7 +8,7 @@ import Hotel from "../models/Hotel.js";
 import Offer from "../models/Offer.js";
 import transporter from "../configs/nodemailer.js";
 import stripe from "stripe";
-import OfferDetails from "../../client/src/pages/OfferDetails.jsx";
+
 
 const checkAvailability= async({checkInDate,checkOutDate,room})=>{
     try {

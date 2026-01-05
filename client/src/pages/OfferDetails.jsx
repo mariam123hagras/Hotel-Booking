@@ -24,7 +24,7 @@ try {
     toast.error('Check-In Date should be less than Check-Out Date')
     return
   }
-  const {data} =await axios.post('/api/bookings/check-availability',{offer:id,checkInDate,checkOutDate})
+  const {data} =await axios.post('/api/bookings/check-availability',{room:id,checkInDate,checkOutDate})
   if(data.success){
     if(data.isAvailable){
       setIsAvailable(true)

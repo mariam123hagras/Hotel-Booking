@@ -5,8 +5,10 @@ import Room from "../models/Room.js";
 
 import Bookings from "../models/Bookings.js";
 import Hotel from "../models/Hotel.js";
+import Offer from "../models/Offer.js";
 import transporter from "../configs/nodemailer.js";
 import stripe from "stripe";
+import OfferDetails from "../../client/src/pages/OfferDetails.jsx";
 
 const checkAvailability= async({checkInDate,checkOutDate,room})=>{
     try {
@@ -16,7 +18,9 @@ const checkAvailability= async({checkInDate,checkOutDate,room})=>{
             checkOutDate:{$gte:checkInDate},
         })
       const isAvailable=  bookings.length===0;
+      
         return isAvailable;
+
     } catch (error) {
         console.error(error.message);
     }
@@ -46,7 +50,7 @@ const checkAvailability= async({checkInDate,checkOutDate,room})=>{
 export const createBooking = async (req, res) => {
   let booking;
   try {
-    const { room, checkInDate, checkOutDate, guests } = req.body;
+    const { room,offer, checkInDate, checkOutDate, guests } = req.body;
     const user = req.user._id;
 
     // console.log("Booking attempt:", { room, checkInDate, checkOutDate, guests, user });
@@ -62,12 +66,31 @@ export const createBooking = async (req, res) => {
         message: "Check-out date must be after check-in date" 
       });
     }
+    let roomId=room;
+    let pricePerNight;
+    if(offer){
+      const offerData= await Offer.findById(offer);
+      if(!offerData){
+        return res.status(404).json({
+          success:false,
+          message:"Offer not found"
+        })
+      }
+      if(!offerData.isActive||new Date(offerData.expiryDate)<new Date()){
+        return res.status(400).json({
+          success:false,
+          message:"Offer has expired"
+        })
+      }
+      roomId=offerData.room;
+      
+    }
 
     // Check availability
     const isAvailable = await checkAvailability({ 
       checkInDate: checkIn, 
       checkOutDate: checkOut, 
-      room 
+      room : roomId
     });
     
     if (!isAvailable) {
@@ -76,6 +99,7 @@ export const createBooking = async (req, res) => {
         message: "Room is not available for the selected dates" 
       });
     }
+   
 
     // Get room data
     const roomData = await Room.findById(room).populate("hotel");
@@ -85,16 +109,17 @@ export const createBooking = async (req, res) => {
         message: "Room not found" 
       });
     }
+    if(!pricePerNight)pricePerNight=roomData.pricePerNight;
 
     // Calculate total price
     const timeDiff = checkOut.getTime() - checkIn.getTime();
     const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    const totalPrice = roomData.pricePerNight * nights;
+    
 
     // Create booking
     booking = await Bookings.create({
       user,
-      room,
+      room: roomId,
       hotel: roomData.hotel._id,
       guests: +guests,
       checkInDate: checkIn,

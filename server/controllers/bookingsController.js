@@ -76,13 +76,7 @@ export const createBooking = async (req, res) => {
           message:"Offer not found"
         })
       }
-      if(new Date(offerData.expiryDate)<new Date()){
-        offerData.isActive=false;
-        return res.status(400).json({
-          success:false,
-          message:"Offer has expired"
-        })
-      }
+    
       roomId=offerData.room;
       pricePerNight=offerData.currentPricePerNight;
       

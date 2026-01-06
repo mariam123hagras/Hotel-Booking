@@ -71,7 +71,7 @@ try {
   }
 
   useEffect(() => {
-    console.log("rooms",rooms)
+    // console.log("rooms",rooms)
     if (rooms && Array.isArray(rooms)) {
       const foundRoom = rooms.find(room => room._id === id)
       if (foundRoom) {
@@ -85,7 +85,7 @@ try {
     }
   }, [rooms, id])
 
-  // ✅ Show loading state while room is being fetched
+  // Show loading state while room is being fetched
   if (!room) {
     return (
       <div className='py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32 flex justify-center items-center'>

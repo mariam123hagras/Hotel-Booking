@@ -109,13 +109,13 @@ export const createOffer = async(req,res)=>{
 // API to get all offers
 export const getOffers= async(req,res)=>{
     try {
-    const offers = await Offer.find({isActive:true})
+    const offers =(await Offer.find({isActive:true})
             .populate({path:'hotel', select:'name address city'})  
             .populate({
                 path: 'room',   
                 select: 'images  amenities roomType'  
-            }).filter(offer => new Date(offer.expiryDate) >= new Date())
-            .sort({createdAt: -1});
+            }).sort({createdAt: -1})).filter(offer => new Date(offer.expiryDate) >= new Date())
+            
            
    res.json({success:true,offers})
     } catch (error) {

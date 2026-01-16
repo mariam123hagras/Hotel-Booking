@@ -11,6 +11,7 @@ const ListRoom = () => {
   const [rooms,setRooms]=useState([])
   const [offers,setOffers]=useState([])
   const [listRooms,setListRooms]=useState(true)
+  const [newExpiryDate,setNewExpiryDate]=useState()
   const {axios,getToken,user,currency}= useAppContext()
 
 
@@ -88,9 +89,37 @@ const toggleOfferAvailability=async(offerId)=>{
       Authorization:`Bearer ${ token}`
     }
   })
+  if(data.expired){
+    toast.error("Cannot toggle an expired offer, please renew it first.")
+    return
+  }
   if(data?.success){
     toast.success(data.message)
     fetchOffers()
+}
+  else{
+    toast.error(data.message)
+  }
+    
+  } catch (error) {
+    toast.error(error.message)
+  }
+  
+}
+
+// new expiry date
+const renewOffer=async(offerId,newExpiryDate)=>{
+  try {
+    const token=await getToken();
+    const {data}=await axios.post(`/api/offers/renew/${offerId}`,{newExpiryDate},{
+    headers:{
+      Authorization:`Bearer ${ token}`
+    }
+  })
+  if(data?.success){
+    toast.success(data.message)
+    fetchOffers()
+    setNewExpiryDate('')
 }
   else{
     toast.error(data.message)
@@ -164,7 +193,8 @@ const toggleOfferAvailability=async(offerId)=>{
               <th className='py-3 px-4 text-gray-800 font-medium'>Name</th>
               <th className='py-3 px-4 text-gray-800 font-medium max-sm:hidden'>Facility</th>
               <th className='py-3 px-2 text-gray-800 font-medium '>Price / night</th>
-              <th className='py-3 px-4 text-gray-800 font-medium text-center'>Actions</th>
+              <th className='py-3 px-4 text-gray-800 font-medium text-center'>Availability</th>
+              <th className='py-3 px-4 text-gray-800 font-medium text-center'>New Expiration Date</th>
             </tr>
           </thead>
 
@@ -193,6 +223,9 @@ const toggleOfferAvailability=async(offerId)=>{
                     <div className='w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200'></div>
                     <span className='absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5'></span>
                   </label>
+                </td>
+                <td className='py-3 px-4 text-gray-700 border-t border-gray-300 text-center'>
+                  <input type="date" value={newExpiryDate} onChange={(e) => renewOffer(item._id, e.target.value)} />
                 </td>
               </tr>
             ))

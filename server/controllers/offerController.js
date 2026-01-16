@@ -150,9 +150,32 @@ export const toggleOffer= async(req,res)=>{
         if(offerData.hotel.toString() !== hotelData._id.toString()){
             return res.json({success:false,message:"You are not authorized to delete this offer"})
         }
+        if(offerData.expiryDate < new Date()){
+            const expired=true;
+            return res.json({success:false,message:"Cannot toggle an expired offer, please renew it first.", expired})
+        }
         await Offer.findByIdAndUpdate(offerId,{isActive:!offerData.isActive});
         res.json({success:true,message:"Offer toggled successfully"})
     } catch (error) {
         res.json({success:false,message:error.message});
     }
 }
+
+export const renewOffer= async(req,res)=>{
+    try {
+        const {offerId}=req.params;
+        const {newExpiryDate}=req.body;
+        const hotelData= await Hotel.findOne({owner:req.auth().userId})
+        const offerData= await Offer.findById(offerId);
+        if(!offerData) return res.json({success:false,message:"Offer not found"}) 
+        if(offerData.hotel.toString() !== hotelData._id.toString()){
+            return res.json({success:false,message:"You are not authorized to renew this offer"})
+        }   
+        const newExpiry= new Date(newExpiryDate);
+        await Offer.findByIdAndUpdate
+        (offerId,{expiryDate:newExpiry,isActive:true});
+        res.json({success:true,message:"Offer renewed successfully"})
+    } catch (error) {
+        res.json({success:false,message:error.message});
+    }       
+}     

@@ -7,8 +7,7 @@ const ExclusiveOffers = () => {
     const {offers,navigate}=useAppContext()
  console.log('Offers in ExclusiveOffers Component:', offers);
     if (!offers || offers.length === 0) {
-        return null; // Or you can return a loading/empty state
-        // return <div className="py-20 text-center">No offers available at the moment</div>
+        return null; 
     }
   return (
    

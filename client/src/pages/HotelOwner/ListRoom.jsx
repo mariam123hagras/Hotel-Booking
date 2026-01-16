@@ -199,10 +199,8 @@ const renewOffer=async(offerId,newExpiryDate)=>{
           </thead>
 
 <tbody className='text-sm'>
-  {offers.length === 0 ? (
-    <tr><td colSpan="4" className="py-4 px-4 text-center text-gray-500">No offers available.</td></tr>
-  ) : (
-    offers.map((item, index) => (
+
+    {offers.length>0&&offers.map((item, index) => (
               <tr key={index}>
                 <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
                   {item.room.roomType}
@@ -228,8 +226,8 @@ const renewOffer=async(offerId,newExpiryDate)=>{
                   <input type="date" value={newExpiryDate} onChange={(e) => renewOffer(item._id, e.target.value)} />
                 </td>
               </tr>
-            ))
-  )}
+            ))}
+  
         </tbody>
         </table>}
 

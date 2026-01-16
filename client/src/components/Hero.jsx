@@ -9,7 +9,7 @@ const Hero = () => {
     e.preventDefault();
     navigate(`/rooms?destination=${destination}`);
     //call api to save recent searched city
-    await axios.post('/api/user/store-recent-search',{recentSearchedCity:destination},{
+    await axios.post('/api/user/store-recent-search',{recentSearchedCities:destination},{
       headers:{Authorization:`Bearer ${ await getToken() }` }
 
     })

@@ -130,7 +130,9 @@ export const getOffers= async(req,res)=>{
 export const getOwnerOffers= async(req,res)=>{
     try {
         const hotelData= await Hotel.findOne({owner:req.auth().userId})
-        const offers=await Offer.find({hotel:hotelData._id.toString()}).populate('hotel');
+        const offers = await Offer.find({hotel: hotelData._id.toString()})
+            .populate('hotel')
+            .populate('room');
         if(!offers) return res.json({success:false,message:"No offers found"})
         res.json({success:true,offers})
     } catch (error) {

@@ -7,9 +7,20 @@ import { useContext } from 'react'
 import toast from 'react-hot-toast'
 
 const RoomDetails = () => {
+     const {rooms,getToken,axios,navigate,testimonials}=useAppContext()
+      const averageRating = (testimonials) => {
+      const hotelRates = testimonials.filter(testimonial => testimonial.hotel === room.hotel.name)
+      
+      if(hotelRates.length === 0) return 0
+      const totalStars = hotelRates.reduce((acc, curr) => acc + curr.rating, 0)
+      return {
+        average: (totalStars / hotelRates.length).toFixed(1),
+        count: hotelRates.length
+      }
+    }
 
   const { id } = useParams()
-  const {rooms,getToken,axios,navigate}=useAppContext()
+ 
   const [room, setRoom] = useState(null)
   const [mainImage, setMainImage] = useState(null)
   const [checkInDate, setCheckInDate] = useState(null)
@@ -112,8 +123,8 @@ try {
 
       {/* Room Rating */}
       <div className='flex items-center gap-1 mt-2'>
-        <StarRating />
-        <p className='ml-2'> 200+ reviews</p>
+        <StarRating rating={averageRating(testimonials).average} />
+        <p className='ml-2'>{averageRating(testimonials).count} reviews</p>
       </div>
 
       {/* Room Address */}
@@ -240,8 +251,8 @@ justify-between  bg-white shadow-[0px_0px_20px_rgba(0,0,0,.15)] p-6 rounded-xl  
           <div>
             <p className='text-lg md:text-xl'>Hosted By {room.hotel.name} </p>
             <div className='flex items-center mt-1'>
-              <StarRating/>
-              <p className='ml-2'>200+ reviews </p>
+              <StarRating rating={averageRating(testimonials).average}/>
+              <p className='ml-2'>{averageRating(testimonials).count} reviews</p>
             </div>
           </div>
         </div>

@@ -16,6 +16,11 @@ export const AppProvider=({children})=>{
    const {getToken} = useAuth();
    const [isOwner,setIsOwner]=useState(false)
    const [showHotelReg,setShowHotelReg]=useState(false)
+   const [showReviewForm,setShowReviewForm]=useState(false)
+   const [review,setReview]=useState({
+    comment:'', stars:0
+   })
+   const [testimonials,setTestimonials]=useState([])
    const [searchedCities,setSearchedCities]= useState([])
    const [rooms,setRooms]= useState([])
    const [offers,setOffers]= useState([])
@@ -73,6 +78,21 @@ export const AppProvider=({children})=>{
   }
 
    }
+   const fetchReviews=async()=>{
+    try {
+      const {data}=await axios.get('/api/reviews')
+
+      if(data?.success){
+        setTestimonials(data.reviews)
+        console.log(testimonials);
+      }else{toast.error(data.message)} 
+
+      
+      
+    } catch (error) {
+      toast.error(error.message)
+    }
+    }
 
    useEffect(()=>{
   if(user){
@@ -82,10 +102,11 @@ export const AppProvider=({children})=>{
    useEffect(()=>{
     fetchRooms()
     fetchOffers()
+    fetchReviews()
    },[])
    const value={
-    currency,navigate,user,getToken,isOwner,setIsOwner,showHotelReg,setShowHotelReg,axios,
-     searchedCities,setSearchedCities,rooms,setRooms,offers,setOffers,
+    currency,navigate,user,getToken,isOwner,setIsOwner,showHotelReg,setShowHotelReg,showReviewForm,setShowReviewForm,axios,
+     searchedCities,setSearchedCities,rooms,setRooms,offers,setOffers,review,setReview,testimonials
    }
 return (
     <AppContext.Provider value={value}>

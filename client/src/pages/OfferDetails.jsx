@@ -9,13 +9,24 @@ import toast from 'react-hot-toast'
 const OfferDetails = () => {
 
   const { id } = useParams()
-  const {offers,getToken,axios,navigate}=useAppContext()
+  const {offers,getToken,axios,navigate,testimonials}=useAppContext()
   const [offer, setOffer] = useState(null)
   const [mainImage, setMainImage] = useState(null)
   const [checkInDate, setCheckInDate] = useState(null)
   const [checkOutDate, setCheckOutDate] = useState(null)
   const [guests, setGuests] = useState(1)
   const [isAvailable, setIsAvailable] = useState(false)
+  // ratings 
+   const averageRating = (testimonials) => {
+      const hotelRates = testimonials.filter(testimonial => testimonial.hotel === offer.hotel.name)
+      
+      if(hotelRates.length === 0) return 0
+      const totalStars = hotelRates.reduce((acc, curr) => acc + curr.rating, 0)
+      return {
+        average: (totalStars / hotelRates.length).toFixed(1),
+        count: hotelRates.length
+      }
+    }
  // Check if the room is available for the selected dates
   const checkAvailability= async()=>{
 try {
@@ -85,7 +96,7 @@ try {
     }
   }, [offers, id])
 
-  // ✅ Show loading state while room is being fetched
+  //  Show loading state while room is being fetched
   if (!offer) {
     return (
       <div className='py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32 flex justify-center items-center'>
@@ -112,8 +123,8 @@ try {
 
       {/* Offer Rating */}
       <div className='flex items-center gap-1 mt-2'>
-        <StarRating />
-        <p className='ml-2'> 200+ reviews</p>
+        <StarRating rating={averageRating(testimonials).average} />
+        <p className='ml-2'>{averageRating(testimonials).count} reviews</p>
       </div>
 
       {/* Offer Address */}
@@ -240,8 +251,8 @@ justify-between  bg-white shadow-[0px_0px_20px_rgba(0,0,0,.15)] p-6 rounded-xl  
           <div>
             <p className='text-lg md:text-xl'>Hosted By {offer.hotel.name} </p>
             <div className='flex items-center mt-1'>
-              <StarRating/>
-              <p className='ml-2'>200+ reviews </p>
+              <StarRating rating={averageRating(testimonials).average} />
+              <p className='ml-2'>{averageRating(testimonials).count} reviews </p>
             </div>
           </div>
         </div>

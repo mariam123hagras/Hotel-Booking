@@ -5,7 +5,7 @@ import { useAppContext } from '../context/AppContext.jsx'
 import toast from 'react-hot-toast'
 const MyBooking = () => {
 
-    const {axios,getToken,user}=useAppContext()
+    const {axios,getToken,user,setShowReviewForm}=useAppContext()
     const [bookings, setBookings] = useState([])
 
     const fetchUserBookings=async()=>{
@@ -61,6 +61,7 @@ const MyBooking = () => {
                     <div className='w-1/3'>Hotels</div>
                     <div className='w-1/3'>Date & Timings</div>
                     <div className='w-1/3'>Payment</div>
+                    
                 </div>
 
                 {bookings.map((booking) => (
@@ -114,6 +115,10 @@ const MyBooking = () => {
 {booking.isPaid?'Paid':'Unpaid'}
 </p>
 </div>
+{booking.isPaid && (
+    <button onClick={()=>setShowReviewForm(true)} className='px-4 py-1.5 mt-4 text-xs border border-gray-400
+    rounded-full hover:bg-gray-50 transition-all cursor-pointer' >Write a Review</button>
+)}
 {!booking.isPaid && (
     <button  onClick={()=>handlePayment(booking._id)}
     className='px-4 py-1.5 mt-4 text-xs border border-gray-400

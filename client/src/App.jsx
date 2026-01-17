@@ -18,16 +18,18 @@ import Loader from './components/Loader';
 import AddOffer from './pages/HotelOwner/AddOffer';
 import AllOffers from './pages/AllOffers';
 import OfferDetails from './pages/OfferDetails';
+import ReviewForm from './components/ReviewForm';
 const App = () => {
 
   const isOwnerPath = useLocation().pathname.includes("owner");
-  const {showHotelReg}=useAppContext();
+  const {showHotelReg,showReviewForm}=useAppContext();
  
   return (
     <div>
       <Toaster />
       {!isOwnerPath && <Navbar />}
     { showHotelReg && <HotelReg/>}
+    { showReviewForm && <ReviewForm/>}
      <TokenLogger/>
       <div className='min-h-[70vh]'>
         <Routes>

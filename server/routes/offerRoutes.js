@@ -5,7 +5,7 @@ import { createOffer, getOffers, getOwnerOffers, renewOffer, toggleOffer } from 
 
 const offerRouter= express.Router();
 
-offerRouter.post('/',upload.array('images',4),protect,createOffer);
+offerRouter.post('/',protect,createOffer);
 offerRouter.get('/',getOffers);
 offerRouter.get('/owner',protect,getOwnerOffers);
 offerRouter.post('/toggle/:offerId',protect,toggleOffer);

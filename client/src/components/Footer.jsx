@@ -1,7 +1,34 @@
 import React from 'react'
 import { assets } from '../assets/assets'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { useAppContext } from '../context/AppContext'
+
 
 const Footer = () => {
+      const {axios}=useAppContext()
+      const [offerEmail,setOfferEmail]=useState('')
+        const handleSubmit=async(email)=>{
+try {
+    if(!email){
+      toast.error('Please enter a valid email')
+      return
+    }
+     const {data}= await axios.post('/api/user/subscribeOffers',{email})
+     if(data?.success){
+      toast.success('Subscribed successfully')
+      setOfferEmail('')
+     }
+    if(data?.error){
+      toast.error(data.error)
+      return
+    }}
+  catch (error) {
+    toast.error(error.message)
+
+  }
+
+  }
     return (
         <div className=' bg-[#F6F9FC] text-gray-500/80 pt-8 px-6 md:px-16 lg:px-24 xl:px-32'>
                        <div className='flex flex-wrap justify-between gap-12 md:gap-6'>
@@ -50,13 +77,16 @@ const Footer = () => {
                                        <p className='mt-3 text-sm'>
                                              Subscribe to our newsletter for inspiration and special offers.
                                          </p>
-                                       <div className='flex items-center mt-4'>
-                                             <input type="text" className='bg-white rounded-l border border-gray-300 h-9 px-3 outline-none' placeholder='Your email' />
-                                              <button className='flex items-center justify-center bg-black h-9 w-9 aspect-square rounded-r'>
+                                       <form onSubmit={(e) => {  e.preventDefault()
+                                             handleSubmit(offerEmail)
+                                          }}
+                                       className='flex items-center mt-4'>
+                                             <input type="email" value={offerEmail} onChange={(e)=>setOfferEmail(e.target.value)} className='bg-white rounded-l border border-gray-300 h-9 px-3 outline-none' placeholder='Your email' />
+                                              <button type="submit" className='flex items-center justify-center bg-black h-9 w-9 aspect-square rounded-r'>
                                                      {/* Arrow icon */}
                                               <img src={assets.arrowIcon} alt="arrow-icon" className='w-3.5 invert'/>
                                                    </button>
-                                           </div>
+                                           </form>
                                     </div>
                             </div>
                         <hr className='border-gray-300 mt-8' />

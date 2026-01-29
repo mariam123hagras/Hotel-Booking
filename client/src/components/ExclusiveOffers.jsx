@@ -5,7 +5,7 @@ import { useAppContext } from '../context/AppContext'
 
 const ExclusiveOffers = () => {
     const {offers,navigate}=useAppContext()
- console.log('Offers in ExclusiveOffers Component:', offers);
+
     if (!offers || offers.length === 0) {
         return null; 
     }
@@ -19,14 +19,14 @@ return (
                             <img src={assets.arrowIcon} alt="arrow-icon"  className='group-hover:translate-x-1 transition-all'/>
                     </button>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12' >
-                    {offers.map((item)=>(
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 h-full' >
+                    {offers.slice(0,3).map((item)=>(
                             <div onClick={() => {navigate(`/offers/${item._id}`) ;scrollTo(0,0)}}
-                            key={item._id} className='group aspect-video relative flex flex-col items-start justify-between gap-1 pt-12 md:pt-18 px-4 rounded-xl text-white bg-no-repeat bg-cover bg-center cursor-pointer h-full' style={{backgroundImage:`url(${item.room.images[0]})`}}
+                            key={item._id} className='group aspect-auto  relative flex flex-col items-start justify-between pt-12 md:pt-18 px-4 rounded-xl text-white bg-no-repeat bg-cover bg-center cursor-pointer h-full' style={{backgroundImage:`url(${item.room.images[0]})`}}
                             >
                                     <div className='absolute inset-0 bg-black/20 rounded-xl'></div>
                                     <p className='px-3 py-1 absolute top-4 left-4 text-xs bg-white text-gray-800 font-medium rounded-full z-10'>{item.discountValue}% OFF</p>
-                                    <div className='relative z-10'>
+                                    <div className='relative z-10 top-0 '>
                                          <p className='text-2xl font-medium font-playfair'>{item.title}</p> 
                                             <p>{item.description}</p> 
                                              <p className='text-xs  mt-3 rounded w-35 text-center'> <span>Expires {new Date(item.expiryDate).toDateString()}</span></p> 

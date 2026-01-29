@@ -30,7 +30,7 @@ const RadioButton=({label,selected = false,onChange=()=>{}})=>{
 
 const AllRooms = () => {
   const [searchParams,setSearchParams]=useSearchParams()
-  const {rooms,navigate,currency}= useAppContext()
+  const {rooms,navigate,currency,averageRating,testimonials}= useAppContext()
   const[openFilters,setOpenFilters]=useState(false)
   const[selectedFilters,setSelectedFilters]=useState({
     roomType:[],
@@ -58,6 +58,8 @@ const AllRooms = () => {
     'Price High to Low',
     'Newest First'
   ];
+
+
 
   // Fixed handleFilterChange function
   const handleFilterChange = (checked, value, type) => {
@@ -153,8 +155,8 @@ const AllRooms = () => {
               className='text-gray-800 text-3xl font-playfair cursor-pointer '>{room.hotel.name}</p>
 
               <div className='flex items-center' >
-          <StarRating/>
-          <p className='ml-2'> 200+ reviews</p>
+          <StarRating rating={averageRating(testimonials,room).stars} />
+          <p className='ml-2'> {averageRating(testimonials,room).count}+ reviews</p>
               </div>
 
               <div className='flex items-center gap-1 text-gray-500 mt-2 text-sm'>

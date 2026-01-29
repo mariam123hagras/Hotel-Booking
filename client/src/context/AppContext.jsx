@@ -59,7 +59,7 @@ export const AppProvider=({children})=>{
    const {data}= await axios.get('/api/user',{headers:{
         Authorization:`Bearer ${token}`
     }})
-    console.log('User Data:', data);
+  
 
 
     
@@ -84,7 +84,7 @@ export const AppProvider=({children})=>{
 
       if(data?.success){
         setTestimonials(data.reviews)
-        console.log(testimonials);
+       
       }else{toast.error(data.message)} 
 
       
@@ -93,6 +93,17 @@ export const AppProvider=({children})=>{
       toast.error(error.message)
     }
     }
+      // Function to calculate average rating for a room
+    const averageRating = (testimonials,room) => {
+
+    const hotelRates = testimonials.filter(testimonial => testimonial.hotel === room.hotel.name)
+    
+    if(hotelRates.length === 0) return 0
+    const totalStars = hotelRates.reduce((acc, curr) => acc + curr.rating, 0)
+    return {
+      stars: (totalStars / hotelRates.length).toFixed(1),
+      count: hotelRates.length}
+  }
 
    useEffect(()=>{
   if(user){
@@ -106,7 +117,7 @@ export const AppProvider=({children})=>{
    },[])
    const value={
     currency,navigate,user,getToken,isOwner,setIsOwner,showHotelReg,setShowHotelReg,showReviewForm,setShowReviewForm,axios,
-     searchedCities,setSearchedCities,rooms,setRooms,offers,setOffers,review,setReview,testimonials
+     searchedCities,setSearchedCities,rooms,setRooms,offers,setOffers,review,setReview,testimonials,averageRating
    }
 return (
     <AppContext.Provider value={value}>

@@ -30,7 +30,7 @@ const RadioButton=({label,selected = false,onChange=()=>{}})=>{
 
 const AllOffers= () => {
   const [searchParams,setSearchParams]=useSearchParams()
-  const {offers,navigate,currency}= useAppContext()
+  const {offers,navigate,currency,averageRating,testimonials}= useAppContext()
   const[openFilters,setOpenFilters]=useState(false)
   const[selectedFilters,setSelectedFilters]=useState({
     roomType:[],
@@ -83,25 +83,25 @@ const AllOffers= () => {
   }
 
   //Function to check if a room matches selected filters
-  const matchesRoomType=(room)=>{
-    return selectedFilters.roomType.length===0 || selectedFilters.roomType.includes(room.roomType);
+  const matchesRoomType=(offer)=>{
+    return selectedFilters.roomType.length===0 || selectedFilters.roomType.includes(offer.room.roomType);
   }
 
   //Function to check if a room matches selected price ranges
-  const matchesPriceRange=(room)=>{
+  const matchesPriceRange=(offer)=>{
     return selectedFilters.priceRanges.length===0 || selectedFilters.priceRanges.some((range)=>{
       const [min,max]=range.split(' to ').map(Number);
-      return room.pricePerNight>=min && room.pricePerNight<=max;
+      return offer.currentPricePerNight>=min && offer.currentPricePerNight<=max;
     } );
   }
 
   //Function  to sort rooms based on selected sorting option
   const sortRooms=(a,b)=>{
     if(selectedSort==='Price Low to High'){
-      return a.pricePerNight-b.pricePerNight;
+      return a.currentPricePerNight-b.currentPricePerNight;
     }
     if(selectedSort==='Price High to Low'){
-      return b.pricePerNight-a.pricePerNight;
+      return b.currentPricePerNight-a.currentPricePerNight;
     }
     if(selectedSort==='Newest First'){
       return new Date(b.createdAt)-new Date(a.createdAt);
@@ -153,8 +153,8 @@ const AllOffers= () => {
               className='text-gray-800 text-3xl font-playfair cursor-pointer '>{offer.hotel.name}</p>
 
               <div className='flex items-center' >
-          <StarRating/>
-          <p className='ml-2'> 200+ reviews</p>
+          <StarRating rating={averageRating(testimonials,offer).stars} />
+          <p className='ml-2'> {averageRating(testimonials,offer).count}+ reviews</p>
               </div>
 
               <div className='flex items-center gap-1 text-gray-500 mt-2 text-sm'>

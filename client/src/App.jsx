@@ -13,7 +13,6 @@ import Dashboard from './pages/HotelOwner/Dashboard';
 import ListRoom from './pages/HotelOwner/ListRoom';
 import {Toaster} from 'react-hot-toast'
 import { useAppContext } from './context/AppContext';
-import TokenLogger from './components/TokenLogger';
 import Loader from './components/Loader';
 import AddOffer from './pages/HotelOwner/AddOffer';
 import AllOffers from './pages/AllOffers';
@@ -30,7 +29,7 @@ const App = () => {
       {!isOwnerPath && <Navbar />}
     { showHotelReg && <HotelReg/>}
     { showReviewForm && <ReviewForm/>}
-     <TokenLogger/>
+
       <div className='min-h-[70vh]'>
         <Routes>
          <Route path='/' element={<Home/>}/>

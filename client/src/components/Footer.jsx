@@ -14,7 +14,7 @@ try {
       toast.error('Please enter a valid email')
       return
     }
-     const {data}= await axios.post('/api/user/subscribeOffers',{email})
+     const {data}= await axios.post('/api/user/subscribe',{email})
      if(data?.success){
       toast.success('Subscribed successfully')
       setOfferEmail('')

@@ -6,7 +6,7 @@ export const protect = async (req, res, next) => {
     const { userId } = getAuth(req);
    
     if (!userId) {
-      return res..json({ success: false, message: "Not authorized" });
+      return res.json({ success: false, message: "Not authorized" });
     }
 
     // Find user by the Clerk userId (this should match the _id in your database)

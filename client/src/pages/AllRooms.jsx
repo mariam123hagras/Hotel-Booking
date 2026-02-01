@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import Title from '../components/Title'
+import { useState } from 'react'
 import { assets, facilityIcons} from '../assets/assets'
 import {  useSearchParams } from 'react-router-dom'
 import StarRating from '../components/StarRating'
@@ -145,6 +144,7 @@ const AllRooms = () => {
       </div>
 
       {filteredRooms.map((room)=>(
+        room.onOffer ? null : (
         <div key={room._id} className='flex flex-col md:flex-row items-start py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0'>
           <img onClick={()=>{navigate(`/rooms/${room._id}`); scrollTo(0,0)}}
               src={room.images[0]} alt='hotel-img' title='View Room Detail'
@@ -182,6 +182,7 @@ const AllRooms = () => {
               </div>
           </div>
         </div>
+        )
       ))}
 
     </div>

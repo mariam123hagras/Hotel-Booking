@@ -12,17 +12,49 @@ import bookingRouter from './routes/bookingRoutes.js';
 import { stripeWebhooks } from './controllers/stripeWebhooks.js';
 import offerRouter from './routes/offerRoutes.js';
 import reviewRouter from './routes/reviewRoutes.js';
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+
+
+
+
 
 connectDB();
 connectCloudinary();
 
 const app=express()
-app.use(cors()) //Enable Cross-Origin Resource Sharing
+// Set security HTTP headers
+app.use(helmet());
+//Enable Cross-Origin Resource Sharing
+
+const allowedOrigins = process.env.CORS_ORIGINS.split(',');
+
+
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ['GET','POST','PUT','DELETE'],
+  credentials: true,
+}));
+
+
 // API to listen to Stripe Webhooks
 app.post('/api/stripe',express.raw({type:'application/json'}),stripeWebhooks);
 // Middle ware
 app.use(express.json())
 app.use(clerkMiddleware())
+
+// Rate Limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)  
+});
+app.use(limiter);
 
 // API to listen to Clerk Webhooks
 app.use('/api/clerk',clerkWebhooks);

@@ -7,7 +7,7 @@ import OffersSubscriber from "../models/offersSubscribers.js";
   try {
     const { email } = req.body;
     const existingSubscriber = await OffersSubscriber.findOne({ email });
-    console.log('Existing Subscriber:', existingSubscriber);
+    // console.log('Existing Subscriber:', existingSubscriber);
     if (existingSubscriber) {
       return res.json({ error: "Email is already subscribed." });
     }

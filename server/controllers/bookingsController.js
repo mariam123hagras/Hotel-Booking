@@ -287,5 +287,20 @@ try {
 
 }
 }
+
+// get all bookings 
+export const getAllBookings=async(req,res)=>{
+  try {
+    const bookings= await Bookings.find()
+    .populate('user','username email')
+    .populate('hotel','name address city')
+    .populate()
+    .sort({createdAt:-1});
+
+    res.json({success:true,bookings})
+  } catch (error) {
+    res.json({success:false,message:error.message})
+  }
+}
    
 

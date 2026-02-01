@@ -1,9 +1,9 @@
-import React, { use, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { assets, facilityIcons, roomCommonData} from '../assets/assets'
 import StarRating from '../components/StarRating.jsx'
 import { useAppContext } from '../context/AppContext.jsx'
-import { useContext } from 'react'
+
 import toast from 'react-hot-toast'
 
 const OfferDetails = () => {
@@ -131,11 +131,11 @@ try {
           <img src={mainImage} alt="Room Image" className='w-full rounded-xl shadow-lg object-cover' />
         </div>
 
-        <div className='grid grid-cols-2 gap-4 lg:w-1/2 w-full'>
+        <div className='grid grid-cols-2 gap-4 lg:w-1/2 w-full h-full  '>
           {offer?.room.images.length > 1 && offer.room.images.map((image, index) => (
             <img onClick={() => setMainImage(image)}
               key={index} src={image} alt='Room Image'
-              className={`w-full rounded-xl shadow-md object-cover cursor-pointer
+              className={`w-full rounded-xl shadow-md object-cover cursor-pointer h-full
               ${mainImage === image && 'outline-3 outline-orange-500'}`} />
           ))}
         </div>

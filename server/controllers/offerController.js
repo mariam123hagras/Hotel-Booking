@@ -3,6 +3,9 @@ import Hotel from "../models/Hotel.js";
 import Room from '../models/Room.js';
 import OffersSubscriber from '../models/offersSubscribers.js';
 import transporter from '../configs/nodemailer.js';
+import xss from 'xss';
+
+
 
 
 
@@ -23,6 +26,7 @@ export const createOffer = async (req, res) => {
       isAvailable: true,
       roomType
     });
+    console.log("Rooms found for offer:", rooms);
 
     if (!rooms.length) {
       return res.status(404).json({
@@ -36,6 +40,9 @@ export const createOffer = async (req, res) => {
 
     //  Create offers
     var offer;
+    req.body.description = xss(req.body.description);
+    req.body.title = xss(req.body.title);
+    
     for (const room of rooms) {
        offer = await Offer.create({
         hotel: hotel._id,
@@ -154,9 +161,11 @@ export const toggleOffer = async (req, res) => {
 export const renewOffer = async (req, res) => {
     try {
         const { offerId } = req.params;
+        // console.log("Renewing offer with ID:", offerId);
         const { newExpiryDate } = req.body;
         const hotelData = await Hotel.findOne({ owner: req.auth().userId })
         const offerData = await Offer.findById(offerId);
+        // console.log("Offer Data:", offerData);
         if (!offerData) return res.json({ success: false, message: "Offer not found" })
         if (offerData.hotel.toString() !== hotelData._id.toString()) {
             return res.json({ success: false, message: "You are not authorized to renew this offer" })
@@ -167,22 +176,22 @@ export const renewOffer = async (req, res) => {
         const offerSubcribers = await OffersSubscriber.find();
         for (const subscriber of offerSubcribers) {
             // Send email to each subscriber
-            console.log(`Sending offer email to subscriber: ${subscriber.email} for offer: ${offer.title}`);
+            console.log(`Sending offer email to subscriber: ${subscriber.email} for offer: ${offerData.title}`);
 
             const emailOptions = {
                 from: process.env.SENDER_EMAIL,
                 to: subscriber.email,
-                subject: `New Offer: ${offer.title}`,
-                html: `<h1>${offer.title}</h1>
-                               <p>${offer.description}</p>
-                               <p>Hotel: ${offer.hotel}%</p>
-                               <p>Discount: ${offer.discountValue}%</p>
-                               <p>Expires on: ${offer.expiryDate.toDateString()}</p>
+                subject: `New Offer: ${offerData.title}`,
+                html: `<h1>${offerData.title}</h1>
+                               <p>${offerData.description}</p>
+                               <p>Hotel: ${offerData.hotel}%</p>
+                               <p>Discount: ${offerData.discountValue}%</p>
+                               <p>Expires on: ${offerData.expiryDate.toDateString()}</p>
                                <p>Book now at our hotel!</p>`
             };
 
             transporter.sendMail(emailOptions);
-            console.log(`Renewal email sent to subscriber: ${subscriber.email} for offer: ${offer.title}`);
+            console.log(`Renewal email sent to subscriber: ${subscriber.email} for offer: ${offerData.title}`);
         }
         res.json({ success: true, message: "Offer renewed successfully" })
     } catch (error) {

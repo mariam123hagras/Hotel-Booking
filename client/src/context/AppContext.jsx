@@ -138,7 +138,7 @@ export const AppProvider = ({ children }) => {
     });
     // Sort rooms based on booking counts
     const bestRooms = [...bookedRooms]
-      .sort((a, b) => (bookingCounts[b._id] || 0) - (bookingCounts[a._id] || 0))
+      .sort((a, b) => (bookingCounts[b._id] || 0) - (bookingCounts[a._id] || 0)).slice(0, 2);
       
     // Return top 4 best-seller rooms
     setBestSellerRooms(bestRooms);

@@ -86,8 +86,8 @@ console.log('Form Data Object:', formDataObject);
   return (
     <form onSubmit={onSubmitHandler}> 
       <Title align='left' font='font-outfit' title='Add Offer' subTitle='Fill in the details carefully and accurate room details,pricing,and amenities,priceOff to enhance the user booking experience' />
-      <div className='w-full flex max-sm:flex-col sm:gap-4 mt-4'>
-        <div className='flex-1 max-w-48'>
+         <div className='flex  flex-row gap-4 '>
+          <div className='flex-1 max-w-48'>
           <p className='text-gray-800 mt-4'>Room Type</p>
           <select value={inputs.roomType} onChange={e=>setInputs({...inputs,roomType:e.target.value})}
           className='border opacity-70 border-gray-300 mt-1 rounded p-2 w-full' >
@@ -100,13 +100,15 @@ console.log('Form Data Object:', formDataObject);
         </div>
 
         
-        <div>
-          <p className='mt-4 text-gray-800'>
+        <div className='w-48'>
+          <p className='mt-4 text-gray-800 w-full  '>
             Discount  <span className='text-xs'>%</span>  
           </p>
-          <input type="number" placeholder='0' className='border border-gray-300 mt-1 rounded p-2 w-24' value={inputs.priceOff} 
+          <input type="number" placeholder='0' className='border border-gray-300 mt-1 rounded p-2 w-full' value={inputs.priceOff} 
           onChange={e=>setInputs({...inputs,discountValue:e.target.value})} />
         </div>
+         </div>
+        
         <div>
           <p className='mt-4 text-gray-800'>
             Expiry Date  
@@ -121,14 +123,14 @@ console.log('Form Data Object:', formDataObject);
           <input type="text" placeholder='write down your title' className='border border-gray-300 mt-1 rounded p-2 w-50 outline-0' value={inputs.title} 
           onChange={e=>setInputs({...inputs,title:e.target.value})} />
         </div>
-      </div>
+  
      
       
         <div>
           <p className='mt-4 text-gray-800'>
               Description 
           </p>
-          <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter description" className='border border-gray-300 mt-1 rounded p-2  outline-0' value={inputs.description} 
+          <textarea id="description" name="description" rows="4" cols="40" placeholder="Enter description" className='border border-gray-300 mt-1 rounded p-2  outline-0' value={inputs.description} 
           onChange={e=>setInputs({...inputs,description:e.target.value})}/>
            
         

@@ -115,7 +115,7 @@ const AddRoom = () => {
         ))}
       </div>
 
-      <div className='w-full flex max-sm:flex-col sm:gap-4 mt-4'>
+      <div className='w-full flex lg:gap-6 gap-4 mt-4'>
         <div className='flex-1 max-w-48'>
           <p className='text-gray-800 mt-4'>Room Type</p>
           <select value={inputs.roomType} onChange={e=>setInputs({...inputs,roomType:e.target.value})}

@@ -18,7 +18,7 @@ try {
       setEmail('')
      }
     if(data?.error){
-      toast.error(data.error)
+      toast.error("Something went wrong. Please  try again later")
       return
     }}
   catch (error) {

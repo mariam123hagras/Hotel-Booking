@@ -26,9 +26,7 @@ const Dashboard = () => {
           setDashboardData(data.dashboardData)
           // console.log(data.dashboardData)
         }
-        else{
-          toast.error(data.message)
-        }
+        
     } catch (error) {
       toast.error(`Failed to fetch dashboard data: ${error.message}`)
     }

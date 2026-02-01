@@ -16,9 +16,7 @@ const ReviewForm = () => {
         toast.success(data.message)
         setShowReviewForm(false)
       }
-      else{
-        toast.error(data.message)
-      }
+      
     
     } catch (error) {
       toast.error(error.message)

@@ -33,8 +33,6 @@ export const AppProvider = ({ children }) => {
 
       if (data?.success) {
         setRooms(data.rooms);
-      } else {
-        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -46,8 +44,6 @@ export const AppProvider = ({ children }) => {
       const { data } = await axios.get("/api/offers");
       if (data?.success) {
         setOffers(data.offers);
-      } else {
-        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -86,9 +82,7 @@ export const AppProvider = ({ children }) => {
       });
       if (data?.success) {
         setBookings(data.bookings);
-      } else {
-        toast.error(data.message);
-      }
+      } 
     } catch (error) {
       toast.error(error.message);
     }
@@ -99,9 +93,7 @@ export const AppProvider = ({ children }) => {
 
       if (data?.success) {
         setTestimonials(data.reviews);
-      } else {
-        toast.error(data.message);
-      }
+      } 
     } catch (error) {
       toast.error(error.message);
     }

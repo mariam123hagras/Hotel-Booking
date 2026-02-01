@@ -28,9 +28,7 @@ const ListRoom = () => {
       if(data?.success){
         setRooms(data.rooms)
       }
-      else{
-        toast.error(data.message)
-      }
+      
 
   }
     catch (error) {
@@ -48,9 +46,7 @@ const ListRoom = () => {
       if(data?.success){
         setOffers(data.offers)
       }
-      else{
-        toast.error(data.message)
-      }
+      
   }
     catch (error) {
       toast.error(error.message)
@@ -71,9 +67,7 @@ const toggleAvailability=async(roomId)=>{
     toast.success(data.message)
     fetchRooms()
 }
-  else{
-    toast.error(data.message)
-  }
+  
     
   } catch (error) {
     toast.error(error.message)
@@ -97,9 +91,7 @@ const toggleOfferAvailability=async(offerId)=>{
     toast.success(data.message)
     fetchOffers()
 }
-  else{
-    toast.error(data.message)
-  }
+ 
     
   } catch (error) {
     toast.error(error.message)
@@ -121,9 +113,7 @@ const renewOffer=async(offerId,newExpiryDate)=>{
     fetchOffers()
     setNewExpiryDate('')
 }
-  else{
-    toast.error(data.message)
-  }
+ 
     
   } catch (error) {
     toast.error(error.message)

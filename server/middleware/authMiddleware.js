@@ -15,7 +15,7 @@ export const protect = async (req, res, next) => {
    
     if (!user) {
       console.log("User not found in database, might be webhook issue");
-      return res.status(404).json({ 
+      return res.json({ 
         success: false, 
         message: "User not found in database" 
       });
@@ -25,7 +25,7 @@ export const protect = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Protect middleware error:", error);
-    return res.status(401).json({ 
+    return res.json({ 
       success: false, 
       message: "Authentication failed" 
     });

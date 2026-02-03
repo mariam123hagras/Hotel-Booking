@@ -24,3 +24,17 @@ export const registerHotel= async (req,res)=>{
 
     }
 }
+ export const gitHotelsCities=async(req,res)=>{
+   try{
+  const hotels=await Hotel.find()
+  console.log(hotels)
+ const cities = [...new Set(hotels.map(hotel => hotel.city.toLowerCase()))];
+  console.log(cities)
+  res.json({success:true,cities})
+}
+  catch(err){
+    res.json({success:false,err})
+  }
+  
+
+}

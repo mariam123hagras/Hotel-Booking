@@ -1,10 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { assets, cities } from '../assets/assets'
 import { useAppContext } from '../context/AppContext';
+import toast from 'react-hot-toast';
 
 const Hero = () => {
   const {navigate,getToken,axios,setSearchedCities}=useAppContext();
   const [destination,setDestination]=useState('');
+  const [cities,setCities]=useState([])
+  
+  useEffect(()=>{
+    const fetchCities =async()=>{
+    try{
+      const{data}= await axios.get('/api/hotels')
+    if(data.success){
+    setCities(data.cities)
+    }
+    else{
+      toast.error(data.err)
+    }
+    }
+    catch(err){
+      console.log(err)
+    }
+
+  }
+  fetchCities()
+
+  }
+   
+   ,[]
+  )
+  
   const onSearch= async(e)=>{
     e.preventDefault();
     navigate(`/rooms?destination=${destination}`);
